@@ -1,3 +1,4 @@
+import 'package:dice_calc/widget/calc_button.dart';
 import 'package:flutter/material.dart';
 
 class CalcScreen extends StatelessWidget {
@@ -12,6 +13,7 @@ class CalcScreen extends StatelessWidget {
           child: Container(
             color: Colors.white70,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Container(
                   padding: const EdgeInsets.all(8.0),
@@ -29,21 +31,22 @@ class CalcScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                Expanded(
-                  child: GridView.count(
-                    physics: const NeverScrollableScrollPhysics(),
-                    crossAxisSpacing: 1,
-                    mainAxisSpacing: 2,
-                    crossAxisCount: 4,
-                    // children: <Widget> [
-                    //   TextButton(onPressed: () {}, child: Text('1'))
-                    // ],
-                    children: List.generate(16, (index) {
-                      return TextButton(
-                        onPressed: () {},
-                        child: Text(index.toString()),
-                      );
-                    }),
+                Flexible(
+                  child: Row(
+                    children: const [
+                      Expanded(
+                          child: CalcButton(
+                        childText: '0',
+                      )),
+                      Expanded(
+                          child: CalcButton(
+                        childText: '.',
+                      )),
+                      Expanded(
+                          child: CalcButton(
+                        childText: '=',
+                      )),
+                    ],
                   ),
                 )
               ],
