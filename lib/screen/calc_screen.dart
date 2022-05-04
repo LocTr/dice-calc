@@ -127,8 +127,10 @@ class _CalcScreenState extends State<CalcScreen> {
                         )),
                         Expanded(
                             child: CalcButton(
-                          childText: 'dN',
-                          onPressed: () {},
+                          childText: '<<',
+                          onPressed: () {
+                            bloc.eventController.sink.add(ClearScreenEvent());
+                          },
                         )),
                       ],
                     ),
