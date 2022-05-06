@@ -4,3 +4,8 @@ List<String> splitDice(String input) {
   result = input.split(regex);
   return result;
 }
+
+List<String> addChar(String input) {
+  List<String> result = [];
+  return result;
+}
