@@ -1,18 +1,10 @@
-import 'package:dice_calc/logic/calc_bloc/calc_bloc.dart';
-import 'package:dice_calc/logic/calc_bloc/calc_event.dart';
-import 'package:dice_calc/logic/calc_bloc/calc_state.dart';
+import 'package:dice_calc/logic/bloc/calc_bloc.dart';
 import 'package:dice_calc/widget/calc_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class CalcScreen extends StatefulWidget {
+class CalcScreen extends StatelessWidget {
   const CalcScreen({Key? key}) : super(key: key);
-
-  @override
-  State<CalcScreen> createState() => _CalcScreenState();
-}
-
-class _CalcScreenState extends State<CalcScreen> {
-  final bloc = CalcBloc();
 
   @override
   Widget build(BuildContext context) {
@@ -32,21 +24,15 @@ class _CalcScreenState extends State<CalcScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      StreamBuilder<CalcState>(
-                          stream: bloc.stateController.stream,
-                          initialData: bloc.state,
-                          builder: (BuildContext context,
-                              AsyncSnapshot<CalcState> snapshot) {
-                            return Flexible(
-                              child: Text(
-                                bloc.state.screenString,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  fontSize: 50,
-                                ),
-                              ),
-                            );
-                          }),
+                      Flexible(
+                        child: Text(
+                          context.watch<CalcBloc>().state.equationScreen,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 50,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -57,7 +43,11 @@ class _CalcScreenState extends State<CalcScreen> {
                         Expanded(
                             child: CalcButton(
                           childText: 'd10',
-                          onPressed: () {},
+                          onPressed: () {
+                            context
+                                .read<CalcBloc>()
+                                .add(const CharacterAdded(character: 'd10'));
+                          },
                           aspectRatio: 1.5,
                         )),
                         Expanded(
@@ -128,9 +118,7 @@ class _CalcScreenState extends State<CalcScreen> {
                         Expanded(
                             child: CalcButton(
                           childText: '<<',
-                          onPressed: () {
-                            bloc.eventController.sink.add(ClearScreenEvent());
-                          },
+                          onPressed: () {},
                         )),
                       ],
                     ),
@@ -163,23 +151,17 @@ class _CalcScreenState extends State<CalcScreen> {
                         Expanded(
                             child: CalcButton(
                           childText: '1',
-                          onPressed: () {
-                            bloc.eventController.sink.add(AddCharEvent('1'));
-                          },
+                          onPressed: () {},
                         )),
                         Expanded(
                             child: CalcButton(
                           childText: '2',
-                          onPressed: () {
-                            bloc.eventController.sink.add(AddCharEvent('2'));
-                          },
+                          onPressed: () {},
                         )),
                         Expanded(
                             child: CalcButton(
                           childText: '3',
-                          onPressed: () {
-                            bloc.eventController.sink.add(AddCharEvent('3'));
-                          },
+                          onPressed: () {},
                         )),
                         Expanded(
                             child: CalcButton(
