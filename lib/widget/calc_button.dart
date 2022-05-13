@@ -5,6 +5,7 @@ class CalcButton extends StatelessWidget {
   final VoidCallback? onLongPress;
   final String childText;
   final double aspectRatio;
+  final double textScaleFactor;
 
   const CalcButton({
     Key? key,
@@ -12,6 +13,7 @@ class CalcButton extends StatelessWidget {
     this.onLongPress,
     this.childText = '',
     this.aspectRatio = 1.2,
+    this.textScaleFactor = 1.5,
   }) : super(key: key);
 
   @override
@@ -21,7 +23,10 @@ class CalcButton extends StatelessWidget {
       child: TextButton(
         onPressed: onPressed,
         onLongPress: onLongPress,
-        child: Text(childText),
+        child: Text(
+          childText,
+          textScaleFactor: textScaleFactor,
+        ),
       ),
     );
   }

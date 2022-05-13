@@ -40,61 +40,38 @@ class CalcScreen extends StatelessWidget {
                   children: [
                     Row(
                       children: [
+                        // IDEAS: chip with condition appear when condition is typed
                         Expanded(
                             child: CalcButton(
-                          childText: 'd10',
+                          childText: 'drop',
                           onPressed: () {
-                            context
-                                .read<CalcBloc>()
-                                .add(const CharacterAdded(character: 'd10'));
+                            // context
+                            //     .read<CalcBloc>()
+                            //     .add(const CharacterAdded(character: 'd10'));
                           },
-                          aspectRatio: 1.5,
+                          aspectRatio: 1.8,
+                          textScaleFactor: 1,
                         )),
                         Expanded(
                             child: CalcButton(
-                          childText: 'd12',
+                          childText: 'keep',
                           onPressed: () {},
-                          aspectRatio: 1.5,
+                          aspectRatio: 1.8,
+                          textScaleFactor: 1,
                         )),
                         Expanded(
                             child: CalcButton(
-                          childText: 'd20',
+                          childText: 'explode',
                           onPressed: () {},
-                          aspectRatio: 1.5,
+                          aspectRatio: 1.8,
+                          textScaleFactor: 1,
                         )),
                         Expanded(
                             child: CalcButton(
-                          childText: 'd100',
+                          childText: 'reroll',
                           onPressed: () {},
-                          aspectRatio: 1.5,
-                        )),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                            child: CalcButton(
-                          childText: 'd2',
-                          onPressed: () {},
-                          aspectRatio: 1.5,
-                        )),
-                        Expanded(
-                            child: CalcButton(
-                          childText: 'd4',
-                          onPressed: () {},
-                          aspectRatio: 1.5,
-                        )),
-                        Expanded(
-                            child: CalcButton(
-                          childText: 'd6',
-                          onPressed: () {},
-                          aspectRatio: 1.5,
-                        )),
-                        Expanded(
-                            child: CalcButton(
-                          childText: 'd8',
-                          onPressed: () {},
-                          aspectRatio: 1.5,
+                          aspectRatio: 1.8,
+                          textScaleFactor: 1,
                         )),
                       ],
                     ),
@@ -117,7 +94,7 @@ class CalcScreen extends StatelessWidget {
                         )),
                         Expanded(
                             child: CalcButton(
-                          childText: '<<',
+                          childText: 'dN',
                           onPressed: () {},
                         )),
                       ],
@@ -174,21 +151,24 @@ class CalcScreen extends StatelessWidget {
                       children: [
                         Expanded(
                             child: CalcButton(
-                          childText: 'Alt',
-                          onPressed: () {},
-                        )),
-                        Expanded(
-                            child: CalcButton(
                           childText: '0',
                           onPressed: () {},
                         )),
                         Expanded(
-                            flex: 2,
                             child: CalcButton(
-                              aspectRatio: 2.4,
-                              childText: 'Roll',
-                              onPressed: () {},
-                            )),
+                          childText: '(',
+                          onPressed: () {},
+                        )),
+                        Expanded(
+                            child: CalcButton(
+                          childText: ')',
+                          onPressed: () {},
+                        )),
+                        Expanded(
+                            child: CalcButton(
+                          childText: '=',
+                          onPressed: () {},
+                        )),
                       ],
                     ),
                   ],
