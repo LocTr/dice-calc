@@ -8,13 +8,13 @@ abstract class CalcEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class CharacterAdded extends CalcEvent {
-  final String character;
+class NumberElementAdded extends CalcEvent {
+  final NumberElement element;
 
-  const CharacterAdded({required this.character});
+  const NumberElementAdded({required this.element});
 
   @override
-  List<Object> get props => [character];
+  List<Object> get props => [element];
 }
 
 class CharacterRemoved extends CalcEvent {

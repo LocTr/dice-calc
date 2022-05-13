@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:dice_calc/logic/bloc/calc_bloc.dart';
+import 'package:dice_calc/model/element.dart';
 import 'package:dice_calc/widget/calc_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,9 +29,9 @@ class CalcScreen extends StatelessWidget {
                     children: [
                       Flexible(
                         child: Text(
-                          context.watch<CalcBloc>().state.equationScreen,
+                          context.watch<CalcBloc>().state.toString(),
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 50,
                           ),
                         ),
@@ -128,7 +131,10 @@ class CalcScreen extends StatelessWidget {
                         Expanded(
                             child: CalcButton(
                           childText: '1',
-                          onPressed: () {},
+                          onPressed: () {
+                            context.read<CalcBloc>().add(NumberElementAdded(
+                                element: NumberElement(content: '1')));
+                          },
                         )),
                         Expanded(
                             child: CalcButton(

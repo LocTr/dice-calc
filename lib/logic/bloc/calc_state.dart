@@ -18,4 +18,15 @@ class CalcState extends Equatable {
 
   @override
   List<Object> get props => [elementList, resultScreen];
+
+  @override
+  String toString() {
+    if (elementList.isEmpty) return '';
+
+    String result = '';
+    for (var element in elementList) {
+      result += element.content;
+    }
+    return result;
+  }
 }

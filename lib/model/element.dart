@@ -16,6 +16,9 @@ class NumberElement extends Element {
       content: content + element.content,
     );
   }
+
+  @override
+  List<Object> get props => [content];
 }
 
 class DiceElement extends Element {
