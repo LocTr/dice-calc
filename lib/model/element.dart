@@ -2,21 +2,27 @@ import 'package:equatable/equatable.dart';
 
 abstract class Element extends Equatable {
   final String content;
-  const Element(this.content);
+  const Element({required this.content});
 
   @override
   List<Object> get props => [content];
 }
 
 class NumberElement extends Element {
-  const NumberElement(String content) : super(content);
+  const NumberElement({required String content}) : super(content: content);
+
+  NumberElement merge({required NumberElement element}) {
+    return NumberElement(
+      content: content + element.content,
+    );
+  }
 }
 
 class DiceElement extends Element {
   final String prefix = 'd';
-  const DiceElement(String content) : super(content);
+  const DiceElement({required String content}) : super(content: content);
 }
 
 class OperatorElement extends Element {
-  const OperatorElement(String content) : super(content);
+  const OperatorElement({required String content}) : super(content: content);
 }
