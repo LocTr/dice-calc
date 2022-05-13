@@ -1,26 +1,21 @@
 part of 'calc_bloc.dart';
 
-@immutable
-abstract class CalcState extends Equatable {
-  final String equationScreen;
+class CalcState extends Equatable {
+  final List<Element> elementList;
   final String resultScreen;
 
-  const CalcState(this.equationScreen, this.resultScreen);
+  const CalcState({this.elementList = const [], this.resultScreen = ''});
+
+  CalcState copyWith({
+    List<Element>? elementList,
+    String? resultScreen,
+  }) {
+    return CalcState(
+      elementList: elementList ?? this.elementList,
+      resultScreen: resultScreen ?? this.resultScreen,
+    );
+  }
 
   @override
-  List<Object> get props => [equationScreen, resultScreen];
-}
-
-class CalcInitState extends CalcState {
-  const CalcInitState() : super('', '0');
-}
-
-class CalcInputState extends CalcState {
-  const CalcInputState(String equationScreen, String resultScreen)
-      : super(equationScreen, resultScreen);
-}
-
-class CalcFinishedState extends CalcState {
-  const CalcFinishedState(String equationScreen, String resultScreen)
-      : super(equationScreen, resultScreen);
+  List<Object> get props => [elementList, resultScreen];
 }
