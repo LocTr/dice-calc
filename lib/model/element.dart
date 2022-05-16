@@ -6,14 +6,19 @@ abstract class Element extends Equatable {
 
   @override
   List<Object> get props => [content];
+
+  @override
+  String toString() {
+    return content;
+  }
 }
 
 class NumberElement extends Element {
   const NumberElement({required String content}) : super(content: content);
 
-  NumberElement merge({required NumberElement element}) {
+  NumberElement merge({required String content}) {
     return NumberElement(
-      content: content + element.content,
+      content: this.content + content,
     );
   }
 
@@ -24,6 +29,17 @@ class NumberElement extends Element {
 class DiceElement extends Element {
   final String prefix = 'd';
   const DiceElement({required String content}) : super(content: content);
+
+  DiceElement merge({required String content}) {
+    return DiceElement(
+      content: this.content + content,
+    );
+  }
+
+  @override
+  String toString() {
+    return prefix + content;
+  }
 }
 
 class OperatorElement extends Element {
