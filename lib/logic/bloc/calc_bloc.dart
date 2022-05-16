@@ -9,31 +9,65 @@ part 'calc_state.dart';
 class CalcBloc extends Bloc<CalcEvent, CalcState> {
   CalcBloc() : super(const CalcState()) {
     on<NumberElementAdded>(_onNumberElementAdded);
+    on<DiceElementAdded>(_onDiceElementAdded);
     // on<CharacterRemoved>(_onCharacterRemoved);
   }
 
   void _onNumberElementAdded(
       NumberElementAdded event, Emitter<CalcState> emit) {
-    if (state.elementList.isEmpty) {
+    final currentList = state.elementList;
+    if (currentList.isEmpty) {
       emit(CalcState(
         elementList: [event.element],
         resultScreen: '',
       ));
-    } else if (state.elementList.last is NumberElement) {
-      //   NumberElement lastElement = (state.elementList.last as NumberElement)
-      //       .merge(element: event.element);
-      //   List<Element> tempList = state.elementList
-      //     ..removeLast()
-      //     ..add(lastElement);
-      //   emit(CalcState(elementList: tempList));
-      // }
-      NumberElement lastElement = state.elementList.last as NumberElement;
-
-      emit(state.copyWith(
+      return;
+    }
+    // switch case seems to look better
+    switch (currentList.last.runtimeType) {
+      case (NumberElement):
+        NumberElement lastElement = state.elementList.last as NumberElement;
+        emit(state.copyWith(
           elementList: List.of(state.elementList)
             ..removeLast()
-            ..add(lastElement.merge(element: event.element))));
+            ..add(
+              lastElement.merge(content: event.element.content),
+            ),
+        ));
+        break;
+      case (DiceElement):
+        DiceElement lastElement = state.elementList.last as DiceElement;
+        emit(state.copyWith(
+          elementList: List.of(state.elementList)
+            ..removeLast()
+            ..add(
+              lastElement.merge(content: event.element.content),
+            ),
+        ));
+        break;
+      default:
+        emit(CalcState(
+          elementList: [event.element],
+          resultScreen: '',
+        ));
     }
+    return;
+  }
+
+  void _onDiceElementAdded(DiceElementAdded event, Emitter<CalcState> emit) {
+    final currentList = state.elementList;
+    if (currentList.isEmpty) {
+      emit(CalcState(
+        elementList: [event.element],
+        resultScreen: '',
+      ));
+      return;
+    }
+    if (currentList.last is DiceElement) return;
+    emit(state.copyWith(
+      elementList: List.of(state.elementList)..add(event.element),
+    ));
+    return;
   }
 
   // void _onCharacterRemoved(CharacterRemoved event, Emitter<CalcState> emit) {

@@ -17,6 +17,15 @@ class NumberElementAdded extends CalcEvent {
   List<Object> get props => [element];
 }
 
+class DiceElementAdded extends CalcEvent {
+  final DiceElement element;
+
+  const DiceElementAdded({required this.element});
+
+  @override
+  List<Object> get props => [element];
+}
+
 class CharacterRemoved extends CalcEvent {
   const CharacterRemoved();
 }

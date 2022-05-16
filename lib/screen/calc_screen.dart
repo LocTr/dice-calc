@@ -107,7 +107,10 @@ class CalcScreen extends StatelessWidget {
                         Expanded(
                             child: CalcButton(
                           childText: 'dN',
-                          onPressed: () {},
+                          onPressed: () {
+                            context.read<CalcBloc>().add(DiceElementAdded(
+                                element: DiceElement(content: '')));
+                          },
                         )),
                       ],
                     ),

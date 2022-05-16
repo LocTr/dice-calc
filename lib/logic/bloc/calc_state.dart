@@ -25,7 +25,7 @@ class CalcState extends Equatable {
 
     String result = '';
     for (var element in elementList) {
-      result += element.content;
+      result += element.toString();
     }
     return result;
   }
