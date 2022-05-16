@@ -83,17 +83,26 @@ class CalcScreen extends StatelessWidget {
                         Expanded(
                             child: CalcButton(
                           childText: '7',
-                          onPressed: () {},
+                          onPressed: () {
+                            context.read<CalcBloc>().add(NumberElementAdded(
+                                element: NumberElement(content: '7')));
+                          },
                         )),
                         Expanded(
                             child: CalcButton(
                           childText: '8',
-                          onPressed: () {},
+                          onPressed: () {
+                            context.read<CalcBloc>().add(NumberElementAdded(
+                                element: NumberElement(content: '8')));
+                          },
                         )),
                         Expanded(
                             child: CalcButton(
                           childText: '9',
-                          onPressed: () {},
+                          onPressed: () {
+                            context.read<CalcBloc>().add(NumberElementAdded(
+                                element: NumberElement(content: '9')));
+                          },
                         )),
                         Expanded(
                             child: CalcButton(
@@ -107,17 +116,26 @@ class CalcScreen extends StatelessWidget {
                         Expanded(
                             child: CalcButton(
                           childText: '4',
-                          onPressed: () {},
+                          onPressed: () {
+                            context.read<CalcBloc>().add(NumberElementAdded(
+                                element: NumberElement(content: '4')));
+                          },
                         )),
                         Expanded(
                             child: CalcButton(
                           childText: '5',
-                          onPressed: () {},
+                          onPressed: () {
+                            context.read<CalcBloc>().add(NumberElementAdded(
+                                element: NumberElement(content: '5')));
+                          },
                         )),
                         Expanded(
                             child: CalcButton(
                           childText: '6',
-                          onPressed: () {},
+                          onPressed: () {
+                            context.read<CalcBloc>().add(NumberElementAdded(
+                                element: NumberElement(content: '6')));
+                          },
                         )),
                         Expanded(
                             child: CalcButton(
@@ -139,12 +157,18 @@ class CalcScreen extends StatelessWidget {
                         Expanded(
                             child: CalcButton(
                           childText: '2',
-                          onPressed: () {},
+                          onPressed: () {
+                            context.read<CalcBloc>().add(NumberElementAdded(
+                                element: NumberElement(content: '2')));
+                          },
                         )),
                         Expanded(
                             child: CalcButton(
                           childText: '3',
-                          onPressed: () {},
+                          onPressed: () {
+                            context.read<CalcBloc>().add(NumberElementAdded(
+                                element: NumberElement(content: '3')));
+                          },
                         )),
                         Expanded(
                             child: CalcButton(
@@ -158,7 +182,10 @@ class CalcScreen extends StatelessWidget {
                         Expanded(
                             child: CalcButton(
                           childText: '0',
-                          onPressed: () {},
+                          onPressed: () {
+                            context.read<CalcBloc>().add(NumberElementAdded(
+                                element: NumberElement(content: '0')));
+                          },
                         )),
                         Expanded(
                             child: CalcButton(
