@@ -41,17 +41,25 @@ class CalcScreen extends StatelessWidget {
                 ),
                 Column(
                   children: [
+                    // TODO: beautify this row
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              context.read<CalcBloc>().add(ElementRemoved());
+                            },
+                            icon: Icon(Icons.backspace_outlined)),
+                      ],
+                    ),
+                    const Divider(),
                     Row(
                       children: [
                         // IDEAS: chip with condition appear when condition is typed
                         Expanded(
                             child: CalcButton(
                           childText: 'drop',
-                          onPressed: () {
-                            // context
-                            //     .read<CalcBloc>()
-                            //     .add(const CharacterAdded(character: 'd10'));
-                          },
+                          onPressed: () {},
                           aspectRatio: 1.8,
                           textScaleFactor: 1,
                         )),
