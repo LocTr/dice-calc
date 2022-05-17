@@ -16,10 +16,8 @@ abstract class Element extends Equatable {
 class NumberElement extends Element {
   const NumberElement({required String content}) : super(content: content);
 
-  NumberElement merge({required String content}) {
-    return NumberElement(
-      content: this.content + content,
-    );
+  NumberElement copyWith({required String content}) {
+    return NumberElement(content: content);
   }
 
   @override
@@ -30,10 +28,8 @@ class DiceElement extends Element {
   final String prefix = 'd';
   const DiceElement({required String content}) : super(content: content);
 
-  DiceElement merge({required String content}) {
-    return DiceElement(
-      content: this.content + content,
-    );
+  DiceElement copyWith({required String content}) {
+    return DiceElement(content: content);
   }
 
   @override
