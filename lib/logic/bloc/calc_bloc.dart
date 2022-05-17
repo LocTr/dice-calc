@@ -10,7 +10,7 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
   CalcBloc() : super(const CalcState()) {
     on<NumberElementAdded>(_onNumberElementAdded);
     on<DiceElementAdded>(_onDiceElementAdded);
-    // on<CharacterRemoved>(_onCharacterRemoved);
+    on<ElementRemoved>(_onElementRemoved);
   }
 
   void _onNumberElementAdded(
@@ -26,23 +26,26 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
     // switch case seems to look better
     switch (currentList.last.runtimeType) {
       case (NumberElement):
-        NumberElement lastElement = state.elementList.last as NumberElement;
+        final NumberElement lastElement =
+            state.elementList.last as NumberElement;
+        final NumberElement newElement =
+            NumberElement(content: lastElement.content + event.element.content);
+
         emit(state.copyWith(
           elementList: List.of(state.elementList)
             ..removeLast()
-            ..add(
-              lastElement.merge(content: event.element.content),
-            ),
+            ..add(newElement),
         ));
         break;
       case (DiceElement):
-        DiceElement lastElement = state.elementList.last as DiceElement;
+        final DiceElement lastElement = state.elementList.last as DiceElement;
+        final DiceElement newElement =
+            DiceElement(content: lastElement.content + event.element.content);
+
         emit(state.copyWith(
           elementList: List.of(state.elementList)
             ..removeLast()
-            ..add(
-              lastElement.merge(content: event.element.content),
-            ),
+            ..add(newElement),
         ));
         break;
       default:
@@ -70,9 +73,47 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
     return;
   }
 
-  // void _onCharacterRemoved(CharacterRemoved event, Emitter<CalcState> emit) {
-  //   final equationScreen = state.equationScreen;
-  //   emit(CalcInputState(equationScreen.substring(0, equationScreen.length - 1),
-  //       state.resultScreen));
-  // }
+  void _onElementRemoved(ElementRemoved event, Emitter<CalcState> emit) {
+    final currentList = state.elementList;
+
+    if (currentList.isEmpty) return;
+
+    switch (currentList.last.runtimeType) {
+      case NumberElement:
+        final lastElement = currentList.last as NumberElement;
+        if (lastElement.content.length == 1) {
+          emit(state.copyWith(
+            elementList: List.of(state.elementList)..removeLast(),
+          ));
+        } else {
+          emit(state.copyWith(
+              elementList: List.of(state.elementList)
+                ..removeLast()
+                ..add(lastElement.copyWith(
+                    content: lastElement.content
+                        .substring(0, lastElement.content.length - 1)))));
+        }
+        break;
+      case DiceElement:
+        final lastElement = currentList.last as DiceElement;
+        if (lastElement.content.isEmpty) {
+          emit(state.copyWith(
+            elementList: List.of(state.elementList)..removeLast(),
+          ));
+        } else {
+          emit(state.copyWith(
+              elementList: List.of(state.elementList)
+                ..removeLast()
+                ..add(lastElement.copyWith(
+                    content: lastElement.content
+                        .substring(0, lastElement.content.length - 1)))));
+        }
+        break;
+      default:
+        emit(state.copyWith(
+          elementList: List.of(state.elementList)..removeLast(),
+        ));
+        return;
+    }
+  }
 }

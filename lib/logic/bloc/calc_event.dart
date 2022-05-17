@@ -26,6 +26,6 @@ class DiceElementAdded extends CalcEvent {
   List<Object> get props => [element];
 }
 
-class CharacterRemoved extends CalcEvent {
-  const CharacterRemoved();
+class ElementRemoved extends CalcEvent {
+  const ElementRemoved();
 }
