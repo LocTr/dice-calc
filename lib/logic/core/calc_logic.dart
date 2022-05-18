@@ -1,15 +1,14 @@
 import 'dart:math';
 
 import 'package:dice_calc/model/element.dart';
+import 'package:dice_calc/model/enums.dart';
 
-List<String> splitDice(String input) {
-  List<String> result;
-  // ?= is lookahead regex
-  // this regex mean split by '+' or by the space before '-'
-  // hence it keep the minus sign if present.
-  final regex = RegExp(r'(\+)|(?=\-)');
-  result = input.split(regex);
-  return result;
+void main() {
+  List<Element> input = const [
+    NumberElement(content: '6'),
+    DiceElement(content: '6'),
+  ];
+  print(rollDices(input));
 }
 
 List<String> addChar(String input) {
@@ -19,40 +18,42 @@ List<String> addChar(String input) {
 
 int rollDices(List<Element> input) {
   int result = 0;
-  //element is dices or bonuses
-  // for (var element in input) {
-  //   bool isNegative = false;
-  //   int point;
-
-  //   //check plus or minus
-  //   if (element[0] == '-') {
-  //     isNegative = true;
-  //     element = element.substring(1);
-  //   }
-  //   // is a dice
-  //   if (element.contains('d')) {
-  //     List<String> numbers = element.split('d');
-
-  //     int diceType = int.parse(numbers.last);
-  //     // split return empty substring if match at the start or end of the string
-  //     int numberOfDice = int.tryParse(numbers.first) ?? 1;
-  //     point = diceRoll(diceType, numberOfDice);
-  //   }
-  //   // is a bonus
-  //   else {
-  //     point = int.parse(element);
-  //   }
-
-  //   isNegative ? result -= point : result += point;
-  // }
+  {
+    List<int> diceResult = [];
+    var currentOperator = Operator.none;
+    var currentMultiplier = 1;
+    for (var i = 0; i < input.length; i++) {
+      var currentElement = input[i];
+      switch (currentElement.runtimeType) {
+        case NumberElement:
+          currentMultiplier = int.parse(currentElement.content);
+          break;
+        case DiceElement:
+          diceResult += _diceProcess(int.parse(currentElement.content),
+                  currentMultiplier, currentOperator)
+              .toList();
+          break;
+      }
+    }
+    result =
+        diceResult.fold(0, (previousValue, element) => previousValue + element);
+  }
 
   return result;
 }
 
-int diceRoll(int numberOfSide, int numberOfRoll) {
-  var result = 0;
-  for (var i = 0; i < numberOfRoll; i++) {
-    result += (Random().nextInt(numberOfSide) + 1);
+Iterable<int> _diceProcess(
+    int numberOfSide, int currentMultiplier, Operator operator) sync* {
+  switch (operator) {
+    case Operator.plus:
+      break;
+    case Operator.none:
+      for (var i = 0; i < currentMultiplier; i++) {
+        final result = Random().nextInt(numberOfSide) + 1;
+        print('this dice return ' + result.toString());
+        yield (result);
+      }
+      break;
+    default:
   }
-  return result;
 }
