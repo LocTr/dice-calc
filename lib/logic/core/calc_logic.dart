@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:dice_calc/model/element.dart';
+
 List<String> splitDice(String input) {
   List<String> result;
   // ?= is lookahead regex
@@ -15,34 +17,34 @@ List<String> addChar(String input) {
   return result;
 }
 
-int rollDices(List<String> input) {
+int rollDices(List<Element> input) {
   int result = 0;
   //element is dices or bonuses
-  for (var element in input) {
-    bool isNegative = false;
-    int point;
+  // for (var element in input) {
+  //   bool isNegative = false;
+  //   int point;
 
-    //check plus or minus
-    if (element[0] == '-') {
-      isNegative = true;
-      element = element.substring(1);
-    }
-    // is a dice
-    if (element.contains('d')) {
-      List<String> numbers = element.split('d');
+  //   //check plus or minus
+  //   if (element[0] == '-') {
+  //     isNegative = true;
+  //     element = element.substring(1);
+  //   }
+  //   // is a dice
+  //   if (element.contains('d')) {
+  //     List<String> numbers = element.split('d');
 
-      int diceType = int.parse(numbers.last);
-      // split return empty substring if match at the start or end of the string
-      int numberOfDice = int.tryParse(numbers.first) ?? 1;
-      point = diceRoll(diceType, numberOfDice);
-    }
-    // is a bonus
-    else {
-      point = int.parse(element);
-    }
+  //     int diceType = int.parse(numbers.last);
+  //     // split return empty substring if match at the start or end of the string
+  //     int numberOfDice = int.tryParse(numbers.first) ?? 1;
+  //     point = diceRoll(diceType, numberOfDice);
+  //   }
+  //   // is a bonus
+  //   else {
+  //     point = int.parse(element);
+  //   }
 
-    isNegative ? result -= point : result += point;
-  }
+  //   isNegative ? result -= point : result += point;
+  // }
 
   return result;
 }
