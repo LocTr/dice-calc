@@ -1,3 +1,4 @@
+import 'package:dice_calc/model/enums.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class Element extends Equatable {
@@ -39,5 +40,16 @@ class DiceElement extends Element {
 }
 
 class OperatorElement extends Element {
-  const OperatorElement({required String content}) : super(content: content);
+  final Operator operator;
+
+  const OperatorElement({required String content, required this.operator})
+      : super(content: content);
+
+  @override
+  List<Object> get props => [content];
+
+  @override
+  String toString() {
+    return content;
+  }
 }
