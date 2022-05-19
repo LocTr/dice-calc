@@ -29,3 +29,12 @@ class DiceElementAdded extends CalcEvent {
 class ElementRemoved extends CalcEvent {
   const ElementRemoved();
 }
+
+class OperatorElementAdded extends CalcEvent {
+  final OperatorElement element;
+
+  const OperatorElementAdded({required this.element});
+
+  @override
+  List<Object> get props => [element];
+}
