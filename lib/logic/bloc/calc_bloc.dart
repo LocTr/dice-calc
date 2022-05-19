@@ -68,6 +68,7 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
       return;
     }
     if (currentList.last is DiceElement) return;
+
     emit(state.copyWith(
       elementList: List.of(state.elementList)..add(event.element),
     ));
@@ -121,9 +122,10 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
   void _onOperatorElementAdded(
       OperatorElementAdded event, Emitter<CalcState> emit) {
     final currentList = state.elementList;
-    if (currentList.isEmpty) {
-      emit(state.copyWith(elementList: [event.element]));
-    } else if (currentList.last is OperatorElement) {
+
+    if (currentList.isEmpty) return;
+
+    if (currentList.last is OperatorElement) {
       emit(state.copyWith(
         elementList: List.of(state.elementList)
           ..removeLast()

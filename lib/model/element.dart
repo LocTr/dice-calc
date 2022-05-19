@@ -46,7 +46,7 @@ class OperatorElement extends Element {
       : super(content: content);
 
   @override
-  List<Object> get props => [content];
+  List<Object> get props => [operator];
 
   @override
   String toString() {

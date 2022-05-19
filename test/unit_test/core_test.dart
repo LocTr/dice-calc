@@ -8,24 +8,27 @@ void main() {
     'Single dice roll with multiplier',
     () {
       test('test dice roll result (1) | single empty d6', () {
+        var result = <int>{};
+        var expected = [1, 2, 3, 4, 5, 6];
         const List<Element> input = [DiceElement(content: '')];
-        for (var i = 0; i < 1000; i++) {
-          var result = rollDices(input);
-          // minimum roll is 1, maximum roll is 11
-          expect(result, inInclusiveRange(1, 6));
-        }
-      });
 
+        for (var i = 0; i < 1000; i++) {
+          result.add(rollDices(input));
+        }
+        expect(result, containsAll(expected));
+      });
       test('test dice roll result (2)  | 3d7', () {
+        var result = <int>{};
+        var expected = List<int>.generate(18, (index) => index + 3);
         const List<Element> input = [
           NumberElement(content: '3'),
           DiceElement(content: '7'),
         ];
+
         for (var i = 0; i < 1000; i++) {
-          var result = rollDices(input);
-          // minimum roll is -9, maximum roll is 3
-          expect(result, inInclusiveRange(-9, 3));
+          result.add(rollDices(input));
         }
+        expect(result, containsAll(expected));
       });
     },
   );
@@ -51,7 +54,7 @@ void main() {
         OperatorElement(content: 'x', operator: Operator.multiply),
         DiceElement(content: ''),
       ];
-      Set expectedResult = <int>{};
+      var expectedResult = <int>{};
       for (var i = 0; i < 1000; i++) {
         int rollResult = rollDices(input);
 

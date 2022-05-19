@@ -3,14 +3,6 @@ import 'dart:math';
 import 'package:dice_calc/model/element.dart';
 import 'package:dice_calc/model/enums.dart';
 
-void main() {
-  List<Element> input = const [
-    NumberElement(content: '6'),
-    DiceElement(content: '6'),
-  ];
-  print(rollDices(input));
-}
-
 List<String> addChar(String input) {
   List<String> result = [];
   return result;
@@ -19,7 +11,6 @@ List<String> addChar(String input) {
 int rollDices(List<Element> input) {
   int result = 0;
   {
-    List<int> diceResult = [];
     var currentOperator = Operator.none;
     var currentMultiplier = 1;
     for (var i = 0; i < input.length; i++) {
@@ -29,14 +20,21 @@ int rollDices(List<Element> input) {
           currentMultiplier = int.parse(currentElement.content);
           break;
         case DiceElement:
-          diceResult += _diceProcess(int.parse(currentElement.content),
-                  currentMultiplier, currentOperator)
-              .toList();
+          final rollResult = _diceProcess(
+              int.parse(currentElement.content.isEmpty
+                  ? '6'
+                  : currentElement.content),
+              currentMultiplier,
+              currentOperator);
+          result += rollResult.fold(
+              0, (previousValue, element) => previousValue + element);
+          currentMultiplier = result;
           break;
+        case OperatorElement:
+          currentMultiplier = 1;
+          currentOperator = (currentElement as OperatorElement).operator;
       }
     }
-    result =
-        diceResult.fold(0, (previousValue, element) => previousValue + element);
   }
 
   return result;
@@ -46,11 +44,11 @@ Iterable<int> _diceProcess(
     int numberOfSide, int currentMultiplier, Operator operator) sync* {
   switch (operator) {
     case Operator.plus:
+      yield currentMultiplier;
       break;
     case Operator.none:
       for (var i = 0; i < currentMultiplier; i++) {
         final result = Random().nextInt(numberOfSide) + 1;
-        print('this dice return ' + result.toString());
         yield (result);
       }
       break;
