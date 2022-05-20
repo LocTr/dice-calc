@@ -35,16 +35,17 @@ void main() {
 
   group('Dice roll with multiple operator', () {
     test('test dice roll with minus op', () {
+      var result = <int>{};
+      var expected = [-6, -5, -4, -3, -2, -1];
       const List<Element> input = [
         NumberElement(content: '0'),
-        OperatorElement(content: '-', operator: Operator.plus),
+        OperatorElement(content: '-', operator: Operator.minus),
         DiceElement(content: '6'),
       ];
       for (var i = 0; i < 1000; i++) {
-        var result = rollDices(input);
-        //minimum roll is -6, maximum roll is 0
-        expect(result, inInclusiveRange(-6, 6));
+        result.add(rollDices(input));
       }
+      expect(result, containsAll(expected));
     });
 
     test('test dice roll with multiply op', () {
@@ -54,14 +55,12 @@ void main() {
         OperatorElement(content: 'x', operator: Operator.multiply),
         DiceElement(content: ''),
       ];
-      var expectedResult = <int>{};
+      var result = <int>{};
+      var expected = const [2, 4, 6, 8, 10, 12];
       for (var i = 0; i < 1000; i++) {
-        int rollResult = rollDices(input);
-
-        expectedResult.add(rollResult);
-        //minimum roll is 12, maximum roll is 0
+        result.add(rollDices(input));
       }
-      expect(expectedResult, containsAll([2, 4, 6, 8, 10, 12]));
+      expect(result, containsAll(expected));
     });
   });
 }
