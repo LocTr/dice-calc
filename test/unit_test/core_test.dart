@@ -13,7 +13,7 @@ void main() {
         const List<Element> input = [DiceElement(content: '')];
 
         for (var i = 0; i < 1000; i++) {
-          result.add(rollDices(input));
+          result.add(calculate(input));
         }
         expect(result, containsAll(expected));
       });
@@ -26,29 +26,15 @@ void main() {
         ];
 
         for (var i = 0; i < 1000; i++) {
-          result.add(rollDices(input));
+          result.add(calculate(input));
         }
         expect(result, containsAll(expected));
       });
     },
   );
 
-  group('Dice roll with multiple operator', () {
-    test('test dice roll with minus op', () {
-      var result = <int>{};
-      var expected = [-6, -5, -4, -3, -2, -1];
-      const List<Element> input = [
-        NumberElement(content: '0'),
-        OperatorElement(content: '-', operator: Operator.minus),
-        DiceElement(content: '6'),
-      ];
-      for (var i = 0; i < 1000; i++) {
-        result.add(rollDices(input));
-      }
-      expect(result, containsAll(expected));
-    });
-
-    test('test dice roll with multiply op', () {
+  group('dice roll with single operator', () {
+    test('plus op | 10 + 2d6', () {
       //this test case could fail at 1 in 7.06e-779 chances
       const List<Element> input = [
         NumberElement(content: '2'),
@@ -58,7 +44,36 @@ void main() {
       var result = <int>{};
       var expected = const [2, 4, 6, 8, 10, 12];
       for (var i = 0; i < 1000; i++) {
-        result.add(rollDices(input));
+        result.add(calculate(input));
+      }
+      expect(result, containsAll(expected));
+    });
+
+    test('test dice roll with minus op', () {
+      var result = <int>{};
+      var expected = [-6, -5, -4, -3, -2, -1];
+      const List<Element> input = [
+        NumberElement(content: '0'),
+        OperatorElement(content: '-', operator: Operator.minus),
+        DiceElement(content: '6'),
+      ];
+      for (var i = 0; i < 1000; i++) {
+        result.add(calculate(input));
+      }
+      expect(result, containsAll(expected));
+    });
+
+    test('multiply op | 2xd', () {
+      //this test case could fail at 1 in 7.06e-779 chances
+      const List<Element> input = [
+        NumberElement(content: '2'),
+        OperatorElement(content: 'x', operator: Operator.multiply),
+        DiceElement(content: ''),
+      ];
+      var result = <int>{};
+      var expected = const [2, 4, 6, 8, 10, 12];
+      for (var i = 0; i < 1000; i++) {
+        result.add(calculate(input));
       }
       expect(result, containsAll(expected));
     });
