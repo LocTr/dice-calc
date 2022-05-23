@@ -10,7 +10,7 @@ abstract class Element extends Equatable {
 
   @override
   String toString() {
-    return content;
+    return content.toString();
   }
 }
 
@@ -35,21 +35,29 @@ class DiceElement extends Element {
 
   @override
   String toString() {
-    return prefix + content;
+    return prefix + content.toString();
   }
 }
 
 class OperatorElement extends Element {
   final Operator operator;
 
-  const OperatorElement({required String content, required this.operator})
-      : super(content: content);
+  const OperatorElement({required this.operator}) : super(content: '');
 
   @override
   List<Object> get props => [operator];
 
   @override
   String toString() {
-    return content;
+    switch (operator) {
+      case Operator.plus:
+        return '+';
+      case Operator.minus:
+        return '-';
+      case Operator.multiply:
+        return 'x';
+      case Operator.divided:
+        return '/';
+    }
   }
 }
