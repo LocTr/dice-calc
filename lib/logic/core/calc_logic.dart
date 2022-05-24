@@ -14,10 +14,6 @@ int calculate(List<Element> input) {
 
   list = _reduceOperator(list);
 
-  for (var element in list) {
-    print('element:' + element.toString());
-  }
-
   int result = 0;
 
   result = int.parse(list.first.content);
@@ -25,18 +21,17 @@ int calculate(List<Element> input) {
 }
 
 void main(List<String> args) {
-  var input = <Element>[DiceElement(content: '6')];
-  var output = _reduceOperator(input);
-  for (var element in output) {
-    print('element: ' + element.content);
-  }
+  var input = const <Element>[DiceElement(content: '6')];
+  var output = calculate(input);
+  print('resuilt: ' + output.toString());
 }
 
 List<Element> _reduceDice(List<Element> input) {
   List<Element> list = List.of(input);
-  _roll(int numberOfSide, int numberOfDice) sync* {
+  _roll(String diceContent, int numberOfDice) sync* {
     for (var i = 0; i < numberOfDice; i++) {
-      final result = Random().nextInt(numberOfSide) + 1;
+      final result = Random().nextInt(int.tryParse(diceContent) ?? 6) + 1;
+      print('dice result:' + result.toString());
       yield result;
     }
   }
@@ -44,18 +39,20 @@ List<Element> _reduceDice(List<Element> input) {
   for (var i = 0; i < list.length; i++) {
     var result = const Iterable<int>.empty();
     if (list[i] is! DiceElement) continue;
+
     if (i == 0) {
-      result = _roll(int.parse(list[i].content), 1);
+      result = _roll(list[i].content, 1);
       list[i] = NumberElement(content: result.first.toString());
     } else if (list[i - 1] is! NumberElement) {
-      result = _roll(int.parse(list[i].content), 1);
+      result = _roll(list[i].content, 1);
       list[i] = NumberElement(content: result.first.toString());
     } else {
-      result =
-          _roll(int.parse(list[i].content), int.parse(list[i - 1].content));
+      result = _roll(list[i].content, int.parse(list[i - 1].content));
       int intResult =
           result.fold(0, (previousValue, element) => previousValue + element);
+      print('3 d7 result: ' + intResult.toString());
       list[i] = NumberElement(content: intResult.toString());
+      list.removeAt(i - 1);
     }
   }
   return list;
