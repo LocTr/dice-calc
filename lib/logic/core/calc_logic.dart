@@ -20,18 +20,11 @@ int calculate(List<Element> input) {
   return result;
 }
 
-void main(List<String> args) {
-  var input = const <Element>[DiceElement(content: '6')];
-  var output = calculate(input);
-  print('resuilt: ' + output.toString());
-}
-
 List<Element> _reduceDice(List<Element> input) {
   List<Element> list = List.of(input);
   _roll(String diceContent, int numberOfDice) sync* {
     for (var i = 0; i < numberOfDice; i++) {
       final result = Random().nextInt(int.tryParse(diceContent) ?? 6) + 1;
-      print('dice result:' + result.toString());
       yield result;
     }
   }
@@ -50,7 +43,6 @@ List<Element> _reduceDice(List<Element> input) {
       result = _roll(list[i].content, int.parse(list[i - 1].content));
       int intResult =
           result.fold(0, (previousValue, element) => previousValue + element);
-      print('3 d7 result: ' + intResult.toString());
       list[i] = NumberElement(content: intResult.toString());
       list.removeAt(i - 1);
     }
