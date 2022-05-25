@@ -69,3 +69,27 @@ class OperatorElement extends Element {
     }
   }
 }
+
+class FilterElement extends Element {
+  final FilterType type;
+  final FilterCondition filterCondition;
+
+  const FilterElement(
+      {required content,
+      required this.type,
+      this.filterCondition = FilterCondition.only})
+      : super(content: content);
+
+  int get value {
+    return int.tryParse(content) ?? 0;
+  }
+
+  @override
+  String toString() {
+    if (filterCondition == FilterCondition.only) {
+      return '${type.name} $content ';
+    } else {
+      return '${type.name} $content ${filterCondition.name}';
+    }
+  }
+}

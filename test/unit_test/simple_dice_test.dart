@@ -12,22 +12,24 @@ void main() {
         final expected = [1, 2, 3, 4, 5, 6];
         const List<Element> input = [DiceElement(content: '')];
 
-        for (var i = 0; i < 1000; i++) {
+        for (var i = 0; i < 10000; i++) {
           result.add(calculate(input));
         }
+        expect(result, hasLength(expected.length));
         expect(result, containsAll(expected));
       });
       test('3d7', () {
         var result = <int>{};
-        final expected = List<int>.generate(18, (index) => index + 3);
+        final expected = List<int>.generate(19, (index) => index + 3);
         const List<Element> input = [
           NumberElement(content: '3'),
           DiceElement(content: '7'),
         ];
 
-        for (var i = 0; i < 1000; i++) {
+        for (var i = 0; i < 10000; i++) {
           result.add(calculate(input));
         }
+        expect(result, hasLength(expected.length));
         expect(result, containsAll(expected));
       });
     },
@@ -43,9 +45,10 @@ void main() {
       ];
       var result = <int>{};
       final expected = [2, 4, 6, 8, 10, 12];
-      for (var i = 0; i < 1000; i++) {
+      for (var i = 0; i < 10000; i++) {
         result.add(calculate(input));
       }
+      expect(result, hasLength(expected.length));
       expect(result, containsAll(expected));
     });
 
@@ -57,24 +60,42 @@ void main() {
         OperatorElement(operator: Operator.minus),
         DiceElement(content: '6'),
       ];
-      for (var i = 0; i < 1000; i++) {
+      for (var i = 0; i < 10000; i++) {
         result.add(calculate(input));
       }
+      expect(result, hasLength(expected.length));
       expect(result, containsAll(expected));
     });
 
-    test('multiply op | 2xd', () {
+    test('multiply op | 3 multiply to empty d6', () {
       //this test case could fail at 1 in 7.06e-779 chances
       const List<Element> input = [
-        NumberElement(content: '2'),
+        NumberElement(content: '3'),
         OperatorElement(operator: Operator.multiply),
         DiceElement(content: ''),
       ];
       var result = <int>{};
-      final expected = [2, 4, 6, 8, 10, 12];
-      for (var i = 0; i < 1000; i++) {
+      final expected = [3, 6, 9, 12, 15, 18];
+      for (var i = 0; i < 10000; i++) {
         result.add(calculate(input));
       }
+      expect(result, hasLength(expected.length));
+      expect(result, containsAll(expected));
+    });
+
+    test('divide op | 2 divided to empty d', () {
+      //this test case could fail at 1 in 7.06e-779 chances
+      const List<Element> input = [
+        NumberElement(content: '2'),
+        OperatorElement(operator: Operator.divided),
+        DiceElement(content: ''),
+      ];
+      var result = <int>{};
+      final expected = [0, 1, 2];
+      for (var i = 0; i < 10000; i++) {
+        result.add(calculate(input));
+      }
+      expect(result, hasLength(expected.length));
       expect(result, containsAll(expected));
     });
   });
