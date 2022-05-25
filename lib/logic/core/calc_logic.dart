@@ -5,9 +5,9 @@ import 'package:dice_calc/model/enums.dart';
 
 int calculate(List<Element> input) {
   List<Element> list = List.of(input);
-  list = reduceDice(list);
+  list = _reduceDice(list);
 
-  list = reduceOperator(list);
+  list = _reduceOperator(list);
 
   int result = 0;
 
@@ -15,7 +15,7 @@ int calculate(List<Element> input) {
   return result;
 }
 
-List<Element> reduceDice(List<Element> input) {
+List<Element> _reduceDice(List<Element> input) {
   List<Element> list = List.of(input);
   _roll(int diceValue, int numberOfDice) sync* {
     for (var i = 0; i < numberOfDice; i++) {
@@ -46,7 +46,7 @@ List<Element> reduceDice(List<Element> input) {
   return list;
 }
 
-List<Element> reduceOperator(List<Element> input) {
+List<Element> _reduceOperator(List<Element> input) {
   List<Element> list = List.of(input);
   //Reduce multiply operator first
   for (var i = 0; i < list.length; i++) {
