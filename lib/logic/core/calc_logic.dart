@@ -3,11 +3,6 @@ import 'dart:math';
 import 'package:dice_calc/model/element.dart';
 import 'package:dice_calc/model/enums.dart';
 
-List<String> addChar(String input) {
-  List<String> result = [];
-  return result;
-}
-
 int calculate(List<Element> input) {
   List<Element> list = List.of(input);
   list = _reduceDice(list);
@@ -16,7 +11,7 @@ int calculate(List<Element> input) {
 
   int result = 0;
 
-  result = (list.first.content as NumberElement).value;
+  result = (list.first as NumberElement).value;
   return result;
 }
 
@@ -82,7 +77,7 @@ List<Element> _reduceOperator(List<Element> input) {
       list.removeAt(i + 1);
       list.removeAt(i - 1);
     } else if (currElement.operator == Operator.minus) {
-      int result = (list[i - 1] as NumberElement).value +
+      int result = (list[i - 1] as NumberElement).value -
           (list[i + 1] as NumberElement).value;
       list[i] = NumberElement(content: result.toString());
       list.removeAt(i + 1);
