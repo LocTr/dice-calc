@@ -16,15 +16,15 @@ int calculate(List<Element> input) {
 
   int result = 0;
 
-  result = int.parse(list.first.content);
+  result = (list.first.content as NumberElement).value;
   return result;
 }
 
 List<Element> _reduceDice(List<Element> input) {
   List<Element> list = List.of(input);
-  _roll(String diceContent, int numberOfDice) sync* {
+  _roll(int diceValue, int numberOfDice) sync* {
     for (var i = 0; i < numberOfDice; i++) {
-      final result = Random().nextInt(int.tryParse(diceContent) ?? 6) + 1;
+      final result = Random().nextInt(diceValue) + 1;
       yield result;
     }
   }
@@ -32,15 +32,16 @@ List<Element> _reduceDice(List<Element> input) {
   for (var i = 0; i < list.length; i++) {
     var result = const Iterable<int>.empty();
     if (list[i] is! DiceElement) continue;
+    var currentDice = list[i] as DiceElement;
 
     if (i == 0) {
-      result = _roll(list[i].content, 1);
+      result = _roll(currentDice.value, 1);
       list[i] = NumberElement(content: result.first.toString());
     } else if (list[i - 1] is! NumberElement) {
-      result = _roll(list[i].content, 1);
+      result = _roll(currentDice.value, 1);
       list[i] = NumberElement(content: result.first.toString());
     } else {
-      result = _roll(list[i].content, int.parse(list[i - 1].content));
+      result = _roll(currentDice.value, (list[i - 1] as NumberElement).value);
       int intResult =
           result.fold(0, (previousValue, element) => previousValue + element);
       list[i] = NumberElement(content: intResult.toString());
@@ -57,14 +58,14 @@ List<Element> _reduceOperator(List<Element> input) {
     if (list[i] is! OperatorElement) continue;
     var currElement = list[i] as OperatorElement;
     if (currElement.operator == Operator.multiply) {
-      int result =
-          int.parse(list[i - 1].content) * int.parse(list[i + 1].content);
+      int result = (list[i - 1] as NumberElement).value *
+          (list[i + 1] as NumberElement).value;
       list[i] = NumberElement(content: result.toString());
       list.removeAt(i + 1);
       list.removeAt(i - 1);
     } else if (currElement.operator == Operator.divided) {
-      int result =
-          int.parse(list[i - 1].content) ~/ int.parse(list[i + 1].content);
+      int result = (list[i - 1] as NumberElement).value ~/
+          (list[i + 1] as NumberElement).value;
       list[i] = NumberElement(content: result.toString());
       list.removeAt(i + 1);
       list.removeAt(i - 1);
@@ -75,14 +76,14 @@ List<Element> _reduceOperator(List<Element> input) {
     if (list[i] is! OperatorElement) continue;
     var currElement = list[i] as OperatorElement;
     if (currElement.operator == Operator.plus) {
-      int result =
-          int.parse(list[i - 1].content) + int.parse(list[i + 1].content);
+      int result = (list[i - 1] as NumberElement).value +
+          (list[i + 1] as NumberElement).value;
       list[i] = NumberElement(content: result.toString());
       list.removeAt(i + 1);
       list.removeAt(i - 1);
     } else if (currElement.operator == Operator.minus) {
-      int result =
-          int.parse(list[i - 1].content) - int.parse(list[i + 1].content);
+      int result = (list[i - 1] as NumberElement).value +
+          (list[i + 1] as NumberElement).value;
       list[i] = NumberElement(content: result.toString());
       list.removeAt(i + 1);
       list.removeAt(i - 1);

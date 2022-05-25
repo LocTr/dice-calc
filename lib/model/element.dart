@@ -21,6 +21,10 @@ class NumberElement extends Element {
     return NumberElement(content: content);
   }
 
+  int get value {
+    return int.tryParse(content) ?? 1;
+  }
+
   @override
   List<Object> get props => [content];
 }
@@ -31,6 +35,10 @@ class DiceElement extends Element {
 
   DiceElement copyWith({required String content}) {
     return DiceElement(content: content);
+  }
+
+  int get value {
+    return int.tryParse(content) ?? 6;
   }
 
   @override
