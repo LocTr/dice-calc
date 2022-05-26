@@ -11,7 +11,7 @@ enum FilterType {
 }
 
 enum FilterCondition {
-  only,
+  none,
   lowest,
   highest,
 }

@@ -77,7 +77,7 @@ class FilterElement extends Element {
   const FilterElement(
       {required content,
       required this.type,
-      this.filterCondition = FilterCondition.only})
+      this.filterCondition = FilterCondition.none})
       : super(content: content);
 
   int get value {
@@ -86,7 +86,7 @@ class FilterElement extends Element {
 
   @override
   String toString() {
-    if (filterCondition == FilterCondition.only) {
+    if (filterCondition == FilterCondition.none) {
       return '${type.name} $content ';
     } else {
       return '${type.name} $content ${filterCondition.name}';
