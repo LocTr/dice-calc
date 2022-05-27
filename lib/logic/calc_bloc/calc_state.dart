@@ -4,7 +4,7 @@ class CalcState extends Equatable {
   final List<Element> elementList;
   final String resultScreen;
 
-  const CalcState({this.elementList = const [], this.resultScreen = ''});
+  const CalcState({this.elementList = const [], this.resultScreen = '0'});
 
   CalcState copyWith({
     List<Element>? elementList,

@@ -47,3 +47,19 @@ class FilterElementAdded extends CalcEvent {
   @override
   List<Object> get props => [element];
 }
+
+class FilterConditionAdded extends CalcEvent {
+  final FilterCondition condition;
+  const FilterConditionAdded({required this.condition});
+
+  @override
+  List<Object> get props => [condition];
+}
+
+class FilterTypeAdded extends CalcEvent {
+  final FilterType type;
+  const FilterTypeAdded({required this.type});
+
+  @override
+  List<Object> get props => [type];
+}

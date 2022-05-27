@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:dice_calc/model/element.dart';
+import 'package:dice_calc/model/enums.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
@@ -49,10 +50,19 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
         ));
         break;
       case (FilterElement):
-        var lastElement =
-            state.elementList.last as FilterElement;
-            final FilterElement
-            break;
+        var lastElement = state.elementList.last as FilterElement;
+        final newElement = FilterElement(
+          content: lastElement.content + event.element.content,
+          type: lastElement.type,
+          filterCondition: lastElement.filterCondition,
+        );
+
+        emit(state.copyWith(
+          elementList: List.of(state.elementList)
+            ..removeLast()
+            ..add(newElement),
+        ));
+        break;
       default:
         emit(CalcState(
           elementList: [event.element],
@@ -67,7 +77,6 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
     if (currentList.isEmpty) {
       emit(CalcState(
         elementList: [event.element],
-        resultScreen: '',
       ));
       return;
     }
@@ -115,6 +124,34 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
                         .substring(0, lastElement.content.length - 1)))));
         }
         break;
+      case FilterElement:
+        final lastElement = currentList.last as FilterElement;
+        if (lastElement.filterCondition != FilterCondition.none) {
+          emit(state.copyWith(
+            elementList: List.of(state.elementList)
+              ..removeLast()
+              ..add(FilterElement(
+                content: lastElement.content,
+                type: lastElement.type,
+                filterCondition: FilterCondition.none,
+              )),
+          ));
+        } else if (lastElement.content.isEmpty) {
+          emit(state.copyWith(
+              elementList: List.of(state.elementList)..removeLast()));
+        } else {
+          emit(state.copyWith(
+            elementList: List.of(state.elementList)
+              ..removeLast()
+              ..add(FilterElement(
+                type: lastElement.type,
+                filterCondition: lastElement.filterCondition,
+                content: lastElement.content
+                    .substring(0, lastElement.content.length - 1),
+              )),
+          ));
+        }
+        break;
       default:
         emit(state.copyWith(
           elementList: List.of(state.elementList)..removeLast(),
@@ -140,5 +177,48 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
         elementList: List.of(state.elementList)..add(event.element),
       ));
     }
+  }
+
+  void _onFilterConditionAdded(
+      FilterConditionAdded event, Emitter<CalcState> emit) {
+    final currentList = state.elementList;
+
+    if (currentList.isEmpty) return;
+
+    if (currentList.last is FilterElement) {
+      final lastElement = currentList.last as FilterElement;
+      final newElement = FilterElement(
+        content: lastElement.content,
+        type: lastElement.type,
+        filterCondition: event.condition,
+      );
+      emit(state.copyWith(
+        elementList: List.of(state.elementList)
+          ..removeLast()
+          ..add(newElement),
+      ));
+    }
+    return;
+  }
+
+  void _onFilterTypeAdded(FilterTypeAdded event, Emitter<CalcState> emit) {
+    final currentList = state.elementList;
+
+    if (currentList.isEmpty) return;
+
+    if (currentList.last is FilterElement) {
+      final lastElement = currentList.last as FilterElement;
+      final newElement = FilterElement(
+        content: lastElement.content,
+        filterCondition: lastElement.filterCondition,
+        type: event.type,
+      );
+      emit(state.copyWith(
+        elementList: List.of(state.elementList)
+          ..removeLast()
+          ..add(newElement),
+      ));
+    }
+    return;
   }
 }
