@@ -1,4 +1,4 @@
-import 'package:dice_calc/logic/bloc/calc_bloc.dart';
+import 'package:dice_calc/logic/calc_bloc/calc_bloc.dart';
 import 'package:dice_calc/screen/calc_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

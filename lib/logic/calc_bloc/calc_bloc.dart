@@ -24,7 +24,6 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
       ));
       return;
     }
-    // switch case seems to look better
     switch (currentList.last.runtimeType) {
       case (NumberElement):
         final NumberElement lastElement =
@@ -49,6 +48,11 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
             ..add(newElement),
         ));
         break;
+      case (FilterElement):
+        var lastElement =
+            state.elementList.last as FilterElement;
+            final FilterElement
+            break;
       default:
         emit(CalcState(
           elementList: [event.element],

@@ -38,3 +38,12 @@ class OperatorElementAdded extends CalcEvent {
   @override
   List<Object> get props => [element];
 }
+
+class FilterElementAdded extends CalcEvent {
+  final FilterElement element;
+
+  const FilterElementAdded({required this.element});
+
+  @override
+  List<Object> get props => [element];
+}

@@ -92,4 +92,7 @@ class FilterElement extends Element {
       return '${type.name} $content ${filterCondition.name}';
     }
   }
+
+  @override
+  List<Object> get props => [content, type, filterCondition];
 }

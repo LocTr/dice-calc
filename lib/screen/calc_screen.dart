@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:dice_calc/logic/bloc/calc_bloc.dart';
+import 'package:dice_calc/logic/calc_bloc/calc_bloc.dart';
 import 'package:dice_calc/model/element.dart';
 import 'package:dice_calc/widget/calc_button.dart';
 import 'package:flutter/material.dart';
