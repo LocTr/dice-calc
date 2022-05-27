@@ -103,12 +103,14 @@ List<Element> _reduceOperator(List<Element> input) {
       list[i] = NumberElement(content: result.toString());
       list.removeAt(i + 1);
       list.removeAt(i - 1);
+      i--;
     } else if (currElement.operator == Operator.divided) {
       int result = (list[i - 1] as NumberElement).value ~/
           (list[i + 1] as NumberElement).value;
       list[i] = NumberElement(content: result.toString());
       list.removeAt(i + 1);
       list.removeAt(i - 1);
+      i--;
     }
   }
   //Reduce add and abstract operator
@@ -121,12 +123,14 @@ List<Element> _reduceOperator(List<Element> input) {
       list[i] = NumberElement(content: result.toString());
       list.removeAt(i + 1);
       list.removeAt(i - 1);
+      i--;
     } else if (currElement.operator == Operator.minus) {
       int result = (list[i - 1] as NumberElement).value -
           (list[i + 1] as NumberElement).value;
       list[i] = NumberElement(content: result.toString());
       list.removeAt(i + 1);
       list.removeAt(i - 1);
+      i--;
     }
   }
   return list;

@@ -66,6 +66,11 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
             ..add(newElement),
         ));
         break;
+      case (OperatorElement):
+        emit(state.copyWith(
+          elementList: List.of(state.elementList)..add(event.element),
+        ));
+        break;
       default:
         emit(CalcState(
           elementList: [event.element],
@@ -228,5 +233,7 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
     int result = calculate(state.elementList);
 
     emit(state.copyWith(resultScreen: result.toString()));
+    print('returning :D');
+    return;
   }
 }
