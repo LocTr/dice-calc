@@ -33,7 +33,7 @@ class CalcScreen extends StatelessWidget {
                           context.watch<CalcBloc>().state.toString(),
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                            fontSize: 50,
+                            fontSize: 30,
                           ),
                         ),
                       ),

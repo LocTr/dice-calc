@@ -42,16 +42,16 @@ List<Element> _reduceDice(List<Element> input) {
     final int filterValue = filterElement.value;
     final list = diceset.toList()..sort((a, b) => a.compareTo(b));
     if (filterElement.type == FilterType.drop) {
-      if (filterElement.filterCondition == FilterCondition.lowest) {
-        return list.sublist(0, filterValue);
-      } else {
-        return list.sublist(list.length - filterValue);
-      }
-    } else {
       if (filterElement.filterCondition == FilterCondition.highest) {
         return list.sublist(0, list.length - filterValue);
       } else {
         return list.sublist(0 + filterValue);
+      }
+    } else {
+      if (filterElement.filterCondition == FilterCondition.lowest) {
+        return list.sublist(0, filterValue);
+      } else {
+        return list.sublist(list.length - filterValue, list.length);
       }
     }
   }
@@ -70,15 +70,11 @@ List<Element> _reduceDice(List<Element> input) {
     } else {
       result = _roll(currentDice.value, (list[i - 1] as NumberElement).value)
           .toList();
-      for (var dice in result) {
-        print('dice :' + dice.toString());
-      }
-      if (i != list.length) {
+      print('total dices:' + result.length.toString());
+      if (i != list.length - 1) {
         if (list[i + 1] is FilterElement) {
           result = _filter(result, list[i + 1] as FilterElement);
-          for (var dice in result) {
-            print('filtered dice :' + dice.toString());
-          }
+          print('filtered dices:' + result.length.toString());
           list.removeAt(i + 1);
         }
       }

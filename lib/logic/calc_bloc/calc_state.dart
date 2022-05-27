@@ -23,7 +23,7 @@ class CalcState extends Equatable {
   String toString() {
     if (elementList.isEmpty) return '';
 
-    String result = '0';
+    String result = '';
     for (var element in elementList) {
       result += element.toString();
     }

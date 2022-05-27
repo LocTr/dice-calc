@@ -24,7 +24,7 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
     if (currentList.isEmpty) {
       emit(CalcState(
         elementList: [event.element],
-        resultScreen: '',
+        resultScreen: state.resultScreen,
       ));
       return;
     }
@@ -216,10 +216,9 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
     if (currentList.isEmpty) return;
 
     if (currentList.last is DiceElement) {
-      final lastElement = currentList.last as FilterElement;
       final newElement = FilterElement(
-        content: lastElement.content,
-        filterCondition: lastElement.filterCondition,
+        content: '',
+        filterCondition: FilterCondition.none,
         type: event.type,
       );
       emit(state.copyWith(
