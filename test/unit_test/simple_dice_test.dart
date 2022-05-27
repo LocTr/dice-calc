@@ -99,4 +99,22 @@ void main() {
       expect(result, containsAll(expected));
     });
   });
+
+  group('dice roll with multiple operator', () {
+    test('plus op | 10 + 10 + 10 + 10', () {
+      //this test case could fail at 1 in 7.06e-779 chances
+      const List<Element> input = [
+        NumberElement(content: '10'),
+        OperatorElement(operator: Operator.plus),
+        NumberElement(content: '10'),
+        OperatorElement(operator: Operator.plus),
+        NumberElement(content: '10'),
+        OperatorElement(operator: Operator.plus),
+        NumberElement(content: '10'),
+      ];
+      var result = calculate(input);
+      const expected = 40;
+      expect(result, equals(expected));
+    });
+  });
 }
