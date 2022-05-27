@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:dice_calc/logic/core/calc_logic.dart';
 import 'package:dice_calc/model/element.dart';
 import 'package:dice_calc/model/enums.dart';
 import 'package:equatable/equatable.dart';
@@ -9,14 +10,16 @@ part 'calc_state.dart';
 
 class CalcBloc extends Bloc<CalcEvent, CalcState> {
   CalcBloc() : super(const CalcState()) {
-    on<NumberElementAdded>(_onNumberElementAdded);
-    on<DiceElementAdded>(_onDiceElementAdded);
+    on<NumberAdded>(_onNumberElementAdded);
+    on<DiceAdded>(_onDiceElementAdded);
     on<ElementRemoved>(_onElementRemoved);
-    on<OperatorElementAdded>(_onOperatorElementAdded);
+    on<OperatorAdded>(_onOperatorElementAdded);
+    on<FilterConditionAdded>(_onFilterConditionAdded);
+    on<FilterElementAdded>(_onFilterElementAdded);
+    on<Calculate>(_onCalculate);
   }
 
-  void _onNumberElementAdded(
-      NumberElementAdded event, Emitter<CalcState> emit) {
+  void _onNumberElementAdded(NumberAdded event, Emitter<CalcState> emit) {
     final currentList = state.elementList;
     if (currentList.isEmpty) {
       emit(CalcState(
@@ -72,7 +75,7 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
     return;
   }
 
-  void _onDiceElementAdded(DiceElementAdded event, Emitter<CalcState> emit) {
+  void _onDiceElementAdded(DiceAdded event, Emitter<CalcState> emit) {
     final currentList = state.elementList;
     if (currentList.isEmpty) {
       emit(CalcState(
@@ -160,21 +163,21 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
     }
   }
 
-  void _onOperatorElementAdded(
-      OperatorElementAdded event, Emitter<CalcState> emit) {
+  void _onOperatorElementAdded(OperatorAdded event, Emitter<CalcState> emit) {
     final currentList = state.elementList;
 
     if (currentList.isEmpty) return;
 
+    final opElement = OperatorElement(operator: event.operator);
     if (currentList.last is OperatorElement) {
       emit(state.copyWith(
         elementList: List.of(state.elementList)
           ..removeLast()
-          ..add(event.element),
+          ..add(opElement),
       ));
     } else {
       emit(state.copyWith(
-        elementList: List.of(state.elementList)..add(event.element),
+        elementList: List.of(state.elementList)..add(opElement),
       ));
     }
   }
@@ -201,12 +204,13 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
     return;
   }
 
-  void _onFilterTypeAdded(FilterTypeAdded event, Emitter<CalcState> emit) {
+  void _onFilterElementAdded(
+      FilterElementAdded event, Emitter<CalcState> emit) {
     final currentList = state.elementList;
 
     if (currentList.isEmpty) return;
 
-    if (currentList.last is FilterElement) {
+    if (currentList.last is DiceElement) {
       final lastElement = currentList.last as FilterElement;
       final newElement = FilterElement(
         content: lastElement.content,
@@ -214,11 +218,15 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
         type: event.type,
       );
       emit(state.copyWith(
-        elementList: List.of(state.elementList)
-          ..removeLast()
-          ..add(newElement),
+        elementList: List.of(state.elementList)..add(newElement),
       ));
     }
     return;
+  }
+
+  void _onCalculate(Calculate event, Emitter<CalcState> emit) {
+    int result = calculate(state.elementList);
+
+    emit(state.copyWith(resultScreen: result.toString()));
   }
 }

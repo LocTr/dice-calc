@@ -2,6 +2,7 @@
 
 import 'package:dice_calc/logic/calc_bloc/calc_bloc.dart';
 import 'package:dice_calc/model/element.dart';
+import 'package:dice_calc/model/enums.dart';
 import 'package:dice_calc/widget/calc_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,6 +40,24 @@ class CalcScreen extends StatelessWidget {
                     ],
                   ),
                 ),
+                Container(
+                  padding: const EdgeInsets.all(8.0),
+                  width: double.infinity,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          context.watch<CalcBloc>().state.resultScreen,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 50,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 Column(
                   children: [
                     // TODO: beautify this row
@@ -59,28 +78,43 @@ class CalcScreen extends StatelessWidget {
                         Expanded(
                             child: CalcButton(
                           childText: 'drop',
-                          onPressed: () {},
+                          onPressed: () {
+                            context
+                                .read<CalcBloc>()
+                                .add(FilterElementAdded(type: FilterType.drop));
+                          },
                           aspectRatio: 1.8,
                           textScaleFactor: 1,
                         )),
                         Expanded(
                             child: CalcButton(
                           childText: 'keep',
-                          onPressed: () {},
+                          onPressed: () {
+                            context
+                                .read<CalcBloc>()
+                                .add(FilterElementAdded(type: FilterType.keep));
+                          },
                           aspectRatio: 1.8,
                           textScaleFactor: 1,
                         )),
                         Expanded(
                             child: CalcButton(
-                          childText: 'explode',
-                          onPressed: () {},
+                          childText: 'lowest',
+                          onPressed: () {
+                            context.read<CalcBloc>().add(FilterConditionAdded(
+                                condition: FilterCondition.lowest));
+                          },
                           aspectRatio: 1.8,
                           textScaleFactor: 1,
                         )),
                         Expanded(
                             child: CalcButton(
-                          childText: 'reroll',
-                          onPressed: () {},
+                          childText: '÷',
+                          onPressed: () {
+                            context
+                                .read<CalcBloc>()
+                                .add(OperatorAdded(operator: Operator.divided));
+                          },
                           aspectRatio: 1.8,
                           textScaleFactor: 1,
                         )),
@@ -92,7 +126,7 @@ class CalcScreen extends StatelessWidget {
                             child: CalcButton(
                           childText: '7',
                           onPressed: () {
-                            context.read<CalcBloc>().add(NumberElementAdded(
+                            context.read<CalcBloc>().add(NumberAdded(
                                 element: NumberElement(content: '7')));
                           },
                         )),
@@ -100,7 +134,7 @@ class CalcScreen extends StatelessWidget {
                             child: CalcButton(
                           childText: '8',
                           onPressed: () {
-                            context.read<CalcBloc>().add(NumberElementAdded(
+                            context.read<CalcBloc>().add(NumberAdded(
                                 element: NumberElement(content: '8')));
                           },
                         )),
@@ -108,16 +142,16 @@ class CalcScreen extends StatelessWidget {
                             child: CalcButton(
                           childText: '9',
                           onPressed: () {
-                            context.read<CalcBloc>().add(NumberElementAdded(
+                            context.read<CalcBloc>().add(NumberAdded(
                                 element: NumberElement(content: '9')));
                           },
                         )),
                         Expanded(
                             child: CalcButton(
-                          childText: 'dN',
+                          childText: '×',
                           onPressed: () {
-                            context.read<CalcBloc>().add(DiceElementAdded(
-                                element: DiceElement(content: '')));
+                            context.read<CalcBloc>().add(
+                                OperatorAdded(operator: Operator.multiply));
                           },
                         )),
                       ],
@@ -128,7 +162,7 @@ class CalcScreen extends StatelessWidget {
                             child: CalcButton(
                           childText: '4',
                           onPressed: () {
-                            context.read<CalcBloc>().add(NumberElementAdded(
+                            context.read<CalcBloc>().add(NumberAdded(
                                 element: NumberElement(content: '4')));
                           },
                         )),
@@ -136,7 +170,7 @@ class CalcScreen extends StatelessWidget {
                             child: CalcButton(
                           childText: '5',
                           onPressed: () {
-                            context.read<CalcBloc>().add(NumberElementAdded(
+                            context.read<CalcBloc>().add(NumberAdded(
                                 element: NumberElement(content: '5')));
                           },
                         )),
@@ -144,14 +178,18 @@ class CalcScreen extends StatelessWidget {
                             child: CalcButton(
                           childText: '6',
                           onPressed: () {
-                            context.read<CalcBloc>().add(NumberElementAdded(
+                            context.read<CalcBloc>().add(NumberAdded(
                                 element: NumberElement(content: '6')));
                           },
                         )),
                         Expanded(
                             child: CalcButton(
-                          childText: '+',
-                          onPressed: () {},
+                          childText: '−',
+                          onPressed: () {
+                            context
+                                .read<CalcBloc>()
+                                .add(OperatorAdded(operator: Operator.minus));
+                          },
                         )),
                       ],
                     ),
@@ -161,7 +199,7 @@ class CalcScreen extends StatelessWidget {
                             child: CalcButton(
                           childText: '1',
                           onPressed: () {
-                            context.read<CalcBloc>().add(NumberElementAdded(
+                            context.read<CalcBloc>().add(NumberAdded(
                                 element: NumberElement(content: '1')));
                           },
                         )),
@@ -169,7 +207,7 @@ class CalcScreen extends StatelessWidget {
                             child: CalcButton(
                           childText: '2',
                           onPressed: () {
-                            context.read<CalcBloc>().add(NumberElementAdded(
+                            context.read<CalcBloc>().add(NumberAdded(
                                 element: NumberElement(content: '2')));
                           },
                         )),
@@ -177,14 +215,18 @@ class CalcScreen extends StatelessWidget {
                             child: CalcButton(
                           childText: '3',
                           onPressed: () {
-                            context.read<CalcBloc>().add(NumberElementAdded(
+                            context.read<CalcBloc>().add(NumberAdded(
                                 element: NumberElement(content: '3')));
                           },
                         )),
                         Expanded(
                             child: CalcButton(
-                          childText: '-',
-                          onPressed: () {},
+                          childText: '+',
+                          onPressed: () {
+                            context
+                                .read<CalcBloc>()
+                                .add(OperatorAdded(operator: Operator.plus));
+                          },
                         )),
                       ],
                     ),
@@ -194,24 +236,29 @@ class CalcScreen extends StatelessWidget {
                             child: CalcButton(
                           childText: '0',
                           onPressed: () {
-                            context.read<CalcBloc>().add(NumberElementAdded(
+                            context.read<CalcBloc>().add(NumberAdded(
                                 element: NumberElement(content: '0')));
                           },
                         )),
                         Expanded(
                             child: CalcButton(
-                          childText: '(',
+                          childText: 'none',
                           onPressed: () {},
                         )),
                         Expanded(
                             child: CalcButton(
-                          childText: ')',
-                          onPressed: () {},
+                          childText: 'dN',
+                          onPressed: () {
+                            context.read<CalcBloc>().add(
+                                DiceAdded(element: DiceElement(content: '')));
+                          },
                         )),
                         Expanded(
                             child: CalcButton(
                           childText: '=',
-                          onPressed: () {},
+                          onPressed: () {
+                            context.read<CalcBloc>().add(Calculate());
+                          },
                         )),
                       ],
                     ),

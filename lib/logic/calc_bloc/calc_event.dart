@@ -8,19 +8,19 @@ abstract class CalcEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class NumberElementAdded extends CalcEvent {
+class NumberAdded extends CalcEvent {
   final NumberElement element;
 
-  const NumberElementAdded({required this.element});
+  const NumberAdded({required this.element});
 
   @override
   List<Object> get props => [element];
 }
 
-class DiceElementAdded extends CalcEvent {
+class DiceAdded extends CalcEvent {
   final DiceElement element;
 
-  const DiceElementAdded({required this.element});
+  const DiceAdded({required this.element});
 
   @override
   List<Object> get props => [element];
@@ -30,22 +30,22 @@ class ElementRemoved extends CalcEvent {
   const ElementRemoved();
 }
 
-class OperatorElementAdded extends CalcEvent {
-  final OperatorElement element;
+class OperatorAdded extends CalcEvent {
+  final Operator operator;
 
-  const OperatorElementAdded({required this.element});
+  const OperatorAdded({required this.operator});
 
   @override
-  List<Object> get props => [element];
+  List<Object> get props => [operator];
 }
 
 class FilterElementAdded extends CalcEvent {
-  final FilterElement element;
+  final FilterType type;
 
-  const FilterElementAdded({required this.element});
+  const FilterElementAdded({required this.type});
 
   @override
-  List<Object> get props => [element];
+  List<Object> get props => [type];
 }
 
 class FilterConditionAdded extends CalcEvent {
@@ -56,10 +56,6 @@ class FilterConditionAdded extends CalcEvent {
   List<Object> get props => [condition];
 }
 
-class FilterTypeAdded extends CalcEvent {
-  final FilterType type;
-  const FilterTypeAdded({required this.type});
-
-  @override
-  List<Object> get props => [type];
+class Calculate extends CalcEvent {
+  const Calculate();
 }
