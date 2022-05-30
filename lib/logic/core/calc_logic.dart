@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:dice_calc/model/element.dart';
 import 'package:dice_calc/model/enums.dart';
+import 'package:dice_calc/model/exception/dice_exception.dart';
 
 void main(List<String> args) {
   List<Element> list = const [
@@ -32,6 +33,7 @@ int calculate(List<Element> input) {
 List<Element> _reduceDice(List<Element> input) {
   List<Element> list = List.of(input);
   _roll(int diceValue, int numberOfDice) sync* {
+    if (diceValue < 1) throw DiceException('');
     for (var i = 0; i < numberOfDice; i++) {
       final result = Random().nextInt(diceValue) + 1;
       yield result;
