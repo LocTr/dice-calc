@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dice_calc/logic/core/calc_logic.dart';
 import 'package:dice_calc/model/element.dart';
 import 'package:dice_calc/model/enums.dart';
+import 'package:dice_calc/model/exception/dice_exception.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
@@ -229,9 +230,13 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
   }
 
   void _onCalculate(Calculate event, Emitter<CalcState> emit) {
-    int result = calculate(state.elementList);
+    try {
+      int result = calculate(state.elementList);
 
-    emit(state.copyWith(resultScreen: result.toString()));
-    return;
+      emit(state.copyWith(resultScreen: result.toString()));
+      return;
+    } on DiceException catch (e) {
+      emit(state.copyWith(resultScreen: e.cause.toString()));
+    }
   }
 }

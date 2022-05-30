@@ -42,6 +42,9 @@ List<Element> _reduceDice(List<Element> input) {
 
   List<int> _filter(Iterable<int> diceset, FilterElement filterElement) {
     final int filterValue = filterElement.value;
+    if (diceset.length <= filterValue) {
+      throw DiceException('filter range excedeed');
+    }
     final list = diceset.toList()..sort((a, b) => a.compareTo(b));
     if (filterElement.type == FilterType.drop) {
       if (filterElement.filterCondition == FilterCondition.highest) {
