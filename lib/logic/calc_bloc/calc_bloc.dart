@@ -82,13 +82,9 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
 
   void _onDiceElementAdded(DiceAdded event, Emitter<CalcState> emit) {
     final currentList = state.elementList;
-    if (currentList.isEmpty) {
-      emit(CalcState(
-        elementList: [event.element],
-      ));
-      return;
+    if (currentList.isNotEmpty) {
+      if (currentList.last is DiceElement) return;
     }
-    if (currentList.last is DiceElement) return;
 
     emit(state.copyWith(
       elementList: List.of(state.elementList)..add(event.element),
@@ -232,7 +228,6 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
     int result = calculate(state.elementList);
 
     emit(state.copyWith(resultScreen: result.toString()));
-    print('returning :D');
     return;
   }
 }

@@ -59,13 +59,13 @@ class OperatorElement extends Element {
   String toString() {
     switch (operator) {
       case Operator.plus:
-        return '+';
+        return ' + ';
       case Operator.minus:
-        return '-';
+        return ' \u2212 ';
       case Operator.multiply:
-        return 'x';
+        return ' \u00d7 ';
       case Operator.divided:
-        return '/';
+        return ' ÷ ';
     }
   }
 }
@@ -87,9 +87,9 @@ class FilterElement extends Element {
   @override
   String toString() {
     if (filterCondition == FilterCondition.none) {
-      return '${type.name} $content ';
+      return ' ${type.name} $content ';
     } else {
-      return '${type.name} $content ${filterCondition.name}';
+      return ' ${type.name} $content ${filterCondition.name}';
     }
   }
 
