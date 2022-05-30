@@ -32,6 +32,8 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
       case (NumberElement):
         final NumberElement lastElement =
             state.elementList.last as NumberElement;
+        if (lastElement.value == 0) return;
+
         final NumberElement newElement =
             NumberElement(content: lastElement.content + event.element.content);
 
@@ -43,6 +45,8 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
         break;
       case (DiceElement):
         final DiceElement lastElement = state.elementList.last as DiceElement;
+        if (lastElement.content == '' && event.element.content == '0') return;
+
         final DiceElement newElement =
             DiceElement(content: lastElement.content + event.element.content);
 
