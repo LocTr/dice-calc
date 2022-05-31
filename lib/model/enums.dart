@@ -16,7 +16,15 @@ enum FilterCondition {
   highest,
 }
 
-enum Reroll {
+enum RerollTimes {
+  once,
+  twice,
+  thrice,
+  specific,
+  always,
+}
+
+enum RerollType {
   reroll,
   explode,
 }

@@ -81,7 +81,7 @@ class FilterElement extends Element {
       : super(content: content);
 
   int get value {
-    return int.tryParse(content) ?? 0;
+    return int.tryParse(content) ?? 1;
   }
 
   @override
@@ -95,4 +95,27 @@ class FilterElement extends Element {
 
   @override
   List<Object> get props => [content, type, filterCondition];
+}
+
+class RerollElement extends Element {
+  final RerollType type;
+  final RerollCondition condition;
+  final RerollTimes times;
+  final String timesContent;
+
+  const RerollElement(
+      {required content,
+      required this.type,
+      required this.condition,
+      required this.times,
+      required this.timesContent})
+      : super(content: content);
+
+  int get timesValue {
+    return int.tryParse(timesContent) ?? 0;
+  }
+
+  int get value {
+    return int.tryParse(content) ?? 0;
+  }
 }
