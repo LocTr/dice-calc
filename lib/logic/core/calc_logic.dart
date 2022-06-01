@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:dice_calc/model/element.dart';
@@ -6,16 +7,16 @@ import 'package:dice_calc/model/exception/dice_exception.dart';
 
 void main(List<String> args) {
   List<Element> list = const [
-    NumberElement(content: '5'),
-    DiceElement(content: ''),
-    FilterElement(
-      content: '2',
-      type: FilterType.keep,
-      filterCondition: FilterCondition.highest,
-    ),
+    NumberElement(content: '1'),
+    DiceElement(content: '2'),
+    RerollElement(
+        content: '2',
+        type: RerollType.reroll,
+        condition: RerollCondition.only,
+        times: RerollTimes.specific,
+        timesContent: '1'),
   ];
   int result = calculate(list);
-  print(result);
 }
 
 int calculate(List<Element> input) {
@@ -59,13 +60,22 @@ List<Element> _reduceDice(List<Element> input) {
   List<int> _reroll(
       Iterable<int> diceset, int diceValue, RerollElement rerollElement) {
     var result = diceset.toList();
+    for (var dice in result) {
+      stdout.write(dice.toString() + ', ');
+    }
+    print('');
+
     switch (rerollElement.condition) {
       case (RerollCondition.only):
         for (int i = 0; i < result.length; i++) {
           int times = 0;
           while (result[i] == rerollElement.value &&
               times < rerollElement.timesValue) {
-            result[i] == _roll(diceValue);
+            result[i] = _roll(diceValue);
+            print('rerolled');
+            for (var dice in result) {
+              stdout.write(dice.toString() + ', ');
+            }
             (rerollElement.times != RerollTimes.always) ? times++ : null;
           }
         }
@@ -79,7 +89,7 @@ List<Element> _reduceDice(List<Element> input) {
           int times = 0;
           while (result[i] <= rerollElement.value &&
               times < rerollElement.timesValue) {
-            result[i] == _roll(diceValue);
+            result[i] = _roll(diceValue);
             (rerollElement.times != RerollTimes.always) ? times++ : null;
           }
         }
@@ -92,7 +102,7 @@ List<Element> _reduceDice(List<Element> input) {
           int times = 0;
           while (result[i] >= rerollElement.value &&
               times < rerollElement.timesValue) {
-            result[i] == _roll(diceValue);
+            result[i] = _roll(diceValue);
             (rerollElement.times != RerollTimes.always) ? times++ : null;
           }
         }
@@ -117,12 +127,14 @@ List<Element> _reduceDice(List<Element> input) {
         for (var num = 0; num < (list[i - 1] as NumberElement).value; num++) {
           result.add(_roll(currentDice.value));
         }
-        print('total dices:' + result.length.toString());
         if (i != list.length - 1) {
           if (list[i + 1] is FilterElement) {
             result = _filter(result, list[i + 1] as FilterElement);
             print('filtered dices:' + result.length.toString());
             list.removeAt(i + 1);
+          } else if (list[i + 1] is RerollElement) {
+            result = _reroll(
+                result, currentDice.value, list[i + 1] as RerollElement);
           }
         }
         final int intResult =
