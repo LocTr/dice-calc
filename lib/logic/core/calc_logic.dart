@@ -31,19 +31,14 @@ int calculate(List<Element> input) {
 }
 
 List<Element> _reduceDice(List<Element> input) {
-  List<Element> list = List.of(input);
-  _roll(int diceValue, int numberOfDice) sync* {
-    if (diceValue < 1) throw DiceException('');
-    for (var i = 0; i < numberOfDice; i++) {
-      final result = Random().nextInt(diceValue) + 1;
-      yield result;
-    }
+  _roll(int diceValue) {
+    return Random().nextInt(diceValue) + 1;
   }
 
   List<int> _filter(Iterable<int> diceset, FilterElement filterElement) {
     final int filterValue = filterElement.value;
     if (diceset.length <= filterValue) {
-      throw DiceException('filter range excedeed');
+      throw DiceException('range err');
     }
     final list = diceset.toList()..sort((a, b) => a.compareTo(b));
     if (filterElement.type == FilterType.drop) {
@@ -61,35 +56,80 @@ List<Element> _reduceDice(List<Element> input) {
     }
   }
 
-  for (var i = 0; i < list.length; i++) {
-    var result = List<int>.empty();
-    if (list[i] is! DiceElement) continue;
-
-    var currentDice = list[i] as DiceElement;
-    if (i == 0) {
-      result = _roll(currentDice.value, 1).toList();
-      list[i] = NumberElement(content: result.first.toString());
-    } else if (list[i - 1] is! NumberElement) {
-      result = _roll(currentDice.value, 1).toList();
-      list[i] = NumberElement(content: result.first.toString());
-    } else {
-      result = _roll(currentDice.value, (list[i - 1] as NumberElement).value)
-          .toList();
-      print('total dices:' + result.length.toString());
-      if (i != list.length - 1) {
-        if (list[i + 1] is FilterElement) {
-          result = _filter(result, list[i + 1] as FilterElement);
-          print('filtered dices:' + result.length.toString());
-          list.removeAt(i + 1);
+  List<int> _reroll(
+      Iterable<int> diceset, int diceValue, RerollElement rerollElement) {
+    var result = diceset.toList();
+    switch (rerollElement.condition) {
+      case (RerollCondition.only):
+        for (int i = 0; i < result.length; i++) {
+          if (rerollElement.times == RerollTimes.always) {
+            while (result[i] == rerollElement.value) {
+              result[i] == _roll(diceValue);
+            }
+          } else {
+            int times = 0;
+            while (result[i] == rerollElement.value &&
+                times < rerollElement.timesValue) {
+              result[i] == _roll(diceValue);
+              times++;
+            }
+          }
         }
-      }
-      int intResult =
-          result.fold(0, (previousValue, element) => previousValue + element);
-      list[i] = NumberElement(content: intResult.toString());
-      list.removeAt(i - 1);
+        break;
+      case (RerollCondition.less):
+        for (int i = 0; i < result.length; i++) {
+          if (rerollElement.times == RerollTimes.always) {
+            while (result[i] <= rerollElement.value) {
+              result[i] == _roll(diceValue);
+            }
+          } else {
+            int times = 0;
+            while (result[i] == rerollElement.value &&
+                times < rerollElement.timesValue) {
+              result[i] == _roll(diceValue);
+              times++;
+            }
+          }
+        }
+        break;
+      default:
     }
   }
-  return list;
+
+  _reduce() {
+    List<Element> list = List.of(input);
+
+    for (var i = 0; i < list.length; i++) {
+      if (list[i] is! DiceElement) continue;
+
+      var currentDice = list[i] as DiceElement;
+      if (i == 0) {
+        list[i] = NumberElement(content: _roll(currentDice.value).toString());
+      } else if (list[i - 1] is! NumberElement) {
+        list[i] = NumberElement(content: _roll(currentDice.value).toString());
+      } else {
+        var result = <int>[];
+        for (var num = 0; num < (list[i - 1] as NumberElement).value; num++) {
+          result.add(_roll(currentDice.value));
+        }
+        print('total dices:' + result.length.toString());
+        if (i != list.length - 1) {
+          if (list[i + 1] is FilterElement) {
+            result = _filter(result, list[i + 1] as FilterElement);
+            print('filtered dices:' + result.length.toString());
+            list.removeAt(i + 1);
+          }
+        }
+        final int intResult =
+            result.fold(0, (previousValue, element) => previousValue + element);
+        list[i] = NumberElement(content: intResult.toString());
+        list.removeAt(i - 1);
+      }
+    }
+    return list;
+  }
+
+  return _reduce();
 }
 
 List<Element> _reduceOperator(List<Element> input) {

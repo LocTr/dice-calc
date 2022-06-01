@@ -30,7 +30,6 @@ class NumberElement extends Element {
 }
 
 class DiceElement extends Element {
-  final String prefix = 'd';
   const DiceElement({required String content}) : super(content: content);
 
   DiceElement copyWith({required String content}) {
@@ -43,7 +42,17 @@ class DiceElement extends Element {
 
   @override
   String toString() {
-    return prefix + content.toString();
+    return 'd' + content.toString();
+  }
+}
+
+class ProcessedDiceElement extends Element {
+  final int result;
+  const ProcessedDiceElement({required String content, required this.result})
+      : super(content: content);
+
+  int get value {
+    return int.tryParse(content) ?? 6;
   }
 }
 
