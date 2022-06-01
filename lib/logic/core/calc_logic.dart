@@ -62,38 +62,43 @@ List<Element> _reduceDice(List<Element> input) {
     switch (rerollElement.condition) {
       case (RerollCondition.only):
         for (int i = 0; i < result.length; i++) {
-          if (rerollElement.times == RerollTimes.always) {
-            while (result[i] == rerollElement.value) {
-              result[i] == _roll(diceValue);
-            }
-          } else {
-            int times = 0;
-            while (result[i] == rerollElement.value &&
-                times < rerollElement.timesValue) {
-              result[i] == _roll(diceValue);
-              times++;
-            }
+          int times = 0;
+          while (result[i] == rerollElement.value &&
+              times < rerollElement.timesValue) {
+            result[i] == _roll(diceValue);
+            (rerollElement.times != RerollTimes.always) ? times++ : null;
           }
         }
         break;
       case (RerollCondition.less):
         for (int i = 0; i < result.length; i++) {
-          if (rerollElement.times == RerollTimes.always) {
-            while (result[i] <= rerollElement.value) {
-              result[i] == _roll(diceValue);
-            }
-          } else {
-            int times = 0;
-            while (result[i] == rerollElement.value &&
-                times < rerollElement.timesValue) {
-              result[i] == _roll(diceValue);
-              times++;
-            }
+          if (diceValue <= rerollElement.value) {
+            throw DiceException('range err');
+          }
+
+          int times = 0;
+          while (result[i] <= rerollElement.value &&
+              times < rerollElement.timesValue) {
+            result[i] == _roll(diceValue);
+            (rerollElement.times != RerollTimes.always) ? times++ : null;
           }
         }
         break;
-      default:
+      case (RerollCondition.more):
+        for (int i = 0; i < result.length; i++) {
+          if (rerollElement.value <= 1) {
+            throw DiceException('range err');
+          }
+          int times = 0;
+          while (result[i] >= rerollElement.value &&
+              times < rerollElement.timesValue) {
+            result[i] == _roll(diceValue);
+            (rerollElement.times != RerollTimes.always) ? times++ : null;
+          }
+        }
+        break;
     }
+    return result;
   }
 
   _reduce() {
