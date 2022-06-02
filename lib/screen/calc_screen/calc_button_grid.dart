@@ -1,6 +1,7 @@
 import 'package:dice_calc/logic/calc_bloc/calc_bloc.dart';
 import 'package:dice_calc/model/element.dart';
 import 'package:dice_calc/model/enums.dart';
+import 'package:dice_calc/screen/calc_screen/history_dialog.dart';
 import 'package:dice_calc/widget/calc_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,6 +40,15 @@ class CalcButtonGrid extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            IconButton(
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return const HistoryDialog();
+                      });
+                },
+                icon: const Icon(Icons.history)),
             IconButton(
                 onPressed: () {
                   context.read<CalcBloc>().add(const ElementRemoved());
