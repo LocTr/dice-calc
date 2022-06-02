@@ -5,19 +5,21 @@ import 'package:dice_calc/model/element.dart';
 import 'package:dice_calc/model/enums.dart';
 import 'package:dice_calc/model/exception/dice_exception.dart';
 
-void main(List<String> args) {
-  List<Element> list = const [
-    NumberElement(content: '1'),
-    DiceElement(content: '2'),
-    RerollElement(
-        content: '2',
-        type: RerollType.reroll,
-        condition: RerollCondition.only,
-        times: RerollTimes.specific,
-        timesContent: '1'),
-  ];
-  int result = calculate(list);
-}
+// void main(List<String> args) {
+//   List<Element> list = const [
+//     NumberElement(content: '1'),
+//     DiceElement(content: '2'),
+//     RerollElement(
+//         content: '2',
+//         type: RerollType.explode,
+//         condition: RerollCondition.only,
+//         times: RerollTimes.specific,
+//         timesContent: '3'),
+//   ];
+//   for (var i = 0; i < 10; i++) {
+//     int result = calculate(list);
+//   }
+// }
 
 int calculate(List<Element> input) {
   List<Element> list = List.of(input);
@@ -63,7 +65,6 @@ List<Element> _reduceDice(List<Element> input) {
     for (var dice in result) {
       stdout.write(dice.toString() + ', ');
     }
-    print('');
 
     switch (rerollElement.condition) {
       case (RerollCondition.only):
@@ -72,7 +73,6 @@ List<Element> _reduceDice(List<Element> input) {
           while (result[i] == rerollElement.value &&
               times < rerollElement.timesValue) {
             result[i] = _roll(diceValue);
-            print('rerolled');
             for (var dice in result) {
               stdout.write(dice.toString() + ', ');
             }
@@ -111,6 +111,63 @@ List<Element> _reduceDice(List<Element> input) {
     return result;
   }
 
+  List<int> _explode(
+      Iterable<int> diceset, int diceValue, RerollElement rerollElement) {
+    var result = diceset.toList();
+    var explodedDice = <int>[];
+    for (var dice in result) {
+      stdout.write(dice.toString() + ', ');
+    }
+
+    switch (rerollElement.condition) {
+      case (RerollCondition.only):
+        for (int i = 0; i < result.length; i++) {
+          int times = 0;
+          while (result[i] == rerollElement.value &&
+              times < rerollElement.timesValue) {
+            explodedDice.add(result[i]);
+            result[i] = _roll(diceValue);
+            for (var dice in result) {
+              stdout.write(dice.toString() + ', ');
+            }
+            (rerollElement.times != RerollTimes.always) ? times++ : null;
+          }
+        }
+        break;
+      case (RerollCondition.less):
+        for (int i = 0; i < result.length; i++) {
+          if (diceValue <= rerollElement.value) {
+            throw DiceException('range err');
+          }
+
+          int times = 0;
+          while (result[i] <= rerollElement.value &&
+              times < rerollElement.timesValue) {
+            explodedDice.add(result[i]);
+            result[i] = _roll(diceValue);
+            (rerollElement.times != RerollTimes.always) ? times++ : null;
+          }
+        }
+        break;
+      case (RerollCondition.more):
+        for (int i = 0; i < result.length; i++) {
+          if (rerollElement.value <= 1) {
+            throw DiceException('range err');
+          }
+          int times = 0;
+          while (result[i] >= rerollElement.value &&
+              times < rerollElement.timesValue) {
+            explodedDice.add(result[i]);
+            result[i] = _roll(diceValue);
+            (rerollElement.times != RerollTimes.always) ? times++ : null;
+          }
+        }
+        break;
+    }
+    result.addAll(explodedDice);
+    return result;
+  }
+
   _reduce() {
     List<Element> list = List.of(input);
 
@@ -130,11 +187,15 @@ List<Element> _reduceDice(List<Element> input) {
         if (i != list.length - 1) {
           if (list[i + 1] is FilterElement) {
             result = _filter(result, list[i + 1] as FilterElement);
-            print('filtered dices:' + result.length.toString());
             list.removeAt(i + 1);
           } else if (list[i + 1] is RerollElement) {
-            result = _reroll(
-                result, currentDice.value, list[i + 1] as RerollElement);
+            if ((list[i + 1] as RerollElement).type == RerollType.reroll) {
+              result = _reroll(
+                  result, currentDice.value, list[i + 1] as RerollElement);
+            } else {
+              result = _explode(
+                  result, currentDice.value, list[i + 1] as RerollElement);
+            }
           }
         }
         final int intResult =
