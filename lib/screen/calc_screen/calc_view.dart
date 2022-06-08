@@ -1,15 +1,18 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:dice_calc/logic/calc_bloc/calc_bloc.dart';
+import 'package:dice_calc/model/element.dart';
+import 'package:dice_calc/widget/calc_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'calc_button_grid.dart';
 
-class CalcScreen extends StatelessWidget {
-  const CalcScreen({Key? key}) : super(key: key);
+class CalcView extends StatelessWidget {
+  const CalcView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    print('rebuild view');
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       body: SafeArea(
@@ -26,15 +29,15 @@ class CalcScreen extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Flexible(
-                        child: Text(
-                          context.watch<CalcBloc>().state.toString(),
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 30,
-                          ),
-                        ),
-                      ),
+                      // Flexible(
+                      //   child: Text(
+                      //     context.watch<CalcBloc>().state.toString(),
+                      //     overflow: TextOverflow.ellipsis,
+                      //     style: TextStyle(
+                      //       fontSize: 30,
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
@@ -44,19 +47,27 @@ class CalcScreen extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Flexible(
-                        child: Text(
-                          context.watch<CalcBloc>().state.resultScreen,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 50,
-                          ),
-                        ),
-                      ),
+                      // Flexible(
+                      //   child: Text(
+                      //     context.watch<CalcBloc>().state.resultScreen,
+                      //     overflow: TextOverflow.ellipsis,
+                      //     style: TextStyle(
+                      //       fontSize: 50,
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
-                CalcButtonGrid()
+                // CalcButtonGrid()
+
+                CalcButton(
+                  childText: '5',
+                  onPressed: () {
+                    context.read<CalcBloc>().add(const NumberAdded(
+                        element: NumberElement(content: '5')));
+                  },
+                ),
               ],
             ),
           ),
