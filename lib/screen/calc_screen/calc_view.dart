@@ -29,15 +29,19 @@ class CalcView extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      // Flexible(
-                      //   child: Text(
-                      //     context.watch<CalcBloc>().state.toString(),
-                      //     overflow: TextOverflow.ellipsis,
-                      //     style: TextStyle(
-                      //       fontSize: 30,
-                      //     ),
-                      //   ),
-                      // ),
+                      BlocBuilder<CalcBloc, CalcState>(
+                        builder: (context, state) {
+                          return Flexible(
+                            child: Text(
+                              context.watch<CalcBloc>().state.toString(),
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 30,
+                              ),
+                            ),
+                          );
+                        },
+                      )
                     ],
                   ),
                 ),
@@ -47,27 +51,23 @@ class CalcView extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      // Flexible(
-                      //   child: Text(
-                      //     context.watch<CalcBloc>().state.resultScreen,
-                      //     overflow: TextOverflow.ellipsis,
-                      //     style: TextStyle(
-                      //       fontSize: 50,
-                      //     ),
-                      //   ),
-                      // ),
+                      BlocBuilder<CalcBloc, CalcState>(
+                        builder: (context, state) {
+                          return Flexible(
+                            child: Text(
+                              context.watch<CalcBloc>().state.resultScreen,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 50,
+                              ),
+                            ),
+                          );
+                        },
+                      )
                     ],
                   ),
                 ),
-                // CalcButtonGrid()
-
-                CalcButton(
-                  childText: '5',
-                  onPressed: () {
-                    context.read<CalcBloc>().add(const NumberAdded(
-                        element: NumberElement(content: '5')));
-                  },
-                ),
+                CalcButtonGrid()
               ],
             ),
           ),
