@@ -1,10 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:dice_calc/logic/calc_bloc/calc_bloc.dart';
-import 'package:dice_calc/model/element.dart';
-import 'package:dice_calc/widget/calc_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'calc_button_grid.dart';
 
 class CalcView extends StatelessWidget {
@@ -12,7 +11,6 @@ class CalcView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('rebuild view');
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       body: SafeArea(

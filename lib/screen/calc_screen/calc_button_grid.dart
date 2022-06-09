@@ -1,6 +1,7 @@
 import 'package:dice_calc/logic/calc_bloc/calc_bloc.dart';
 import 'package:dice_calc/model/element.dart';
 import 'package:dice_calc/model/enums.dart';
+import 'package:dice_calc/screen/calc_screen/condition_row.dart';
 import 'package:dice_calc/screen/calc_screen/history_dialog.dart';
 import 'package:dice_calc/widget/calc_button.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +41,7 @@ class CalcButtonGrid extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            const ConditionRow(),
             IconButton(
                 onPressed: () {
                   showDialog(

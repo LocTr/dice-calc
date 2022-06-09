@@ -9,11 +9,9 @@ class ConditionRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('rebuild');
-    Iterable<Widget> renderButton() sync* {
-      var calcState = context.read<CalcBloc>().state;
-      if (calcState.elementList.isNotEmpty) {
-        switch (calcState.elementList.last.runtimeType) {
+    Iterable<Widget> renderButton(CalcState state) sync* {
+      if (state.elementList.isNotEmpty) {
+        switch (state.elementList.last.runtimeType) {
           case DiceElement:
             yield ChipButton(label: 'drop');
             yield ChipButton(label: 'keep');
@@ -32,8 +30,10 @@ class ConditionRow extends StatelessWidget {
       }
     }
 
-    return Row(
-      children: renderButton().toList(),
+    return BlocBuilder<CalcBloc, CalcState>(
+      builder: (context, state) {
+        return Row(children: renderButton(state).toList());
+      },
     );
   }
 }
