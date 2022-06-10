@@ -9,11 +9,9 @@ class ChipButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Chip(
-        label: Text(label),
-      ),
+    return TextButton(
+      child: Text(label),
+      onPressed: onTap,
     );
   }
 }

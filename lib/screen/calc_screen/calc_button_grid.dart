@@ -37,7 +37,6 @@ class CalcButtonGrid extends StatelessWidget {
 
     return Column(
       children: [
-        // TODO: beautify this row
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
@@ -59,7 +58,6 @@ class CalcButtonGrid extends StatelessWidget {
           ],
         ),
         const Divider(),
-
         Row(
           children: [
             Expanded(

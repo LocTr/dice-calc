@@ -1,6 +1,6 @@
 import 'package:dice_calc/logic/calc_bloc/calc_bloc.dart';
 import 'package:dice_calc/model/element.dart';
-import 'package:dice_calc/widgets/chip_button.dart';
+import 'package:dice_calc/model/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,15 +13,53 @@ class ConditionRow extends StatelessWidget {
       if (state.elementList.isNotEmpty) {
         switch (state.elementList.last.runtimeType) {
           case DiceElement:
-            yield ChipButton(label: 'drop');
-            yield ChipButton(label: 'keep');
-            yield ChipButton(label: 'reroll');
-            yield ChipButton(label: 'explode');
+            yield TextButton(
+              child: const Text('drop'),
+              onPressed: () {
+                context
+                    .read<CalcBloc>()
+                    .add(const FilterElementAdded(type: FilterType.drop));
+              },
+            );
+            yield TextButton(
+              child: const Text('keep'),
+              onPressed: () {
+                context
+                    .read<CalcBloc>()
+                    .add(const FilterElementAdded(type: FilterType.keep));
+              },
+            );
+            yield TextButton(
+              child: const Text('reroll'),
+              onPressed: () {},
+            );
+            yield TextButton(
+              child: const Text('explode'),
+              onPressed: () {},
+            );
             break;
           case FilterElement:
-            yield ChipButton(label: 'or more');
-            yield ChipButton(label: 'or less');
-            yield ChipButton(label: 'only');
+            yield TextButton(
+              child: const Text('highest'),
+              onPressed: () {
+                context.read<CalcBloc>().add(const FilterConditionAdded(
+                    condition: FilterCondition.highest));
+              },
+            );
+            yield TextButton(
+              child: const Text('lowest'),
+              onPressed: () {
+                context.read<CalcBloc>().add(const FilterConditionAdded(
+                    condition: FilterCondition.lowest));
+              },
+            );
+            yield TextButton(
+              child: const Text('only'),
+              onPressed: () {
+                context.read<CalcBloc>().add(const FilterConditionAdded(
+                    condition: FilterCondition.none));
+              },
+            );
             break;
           case RerollElement:
             break;
