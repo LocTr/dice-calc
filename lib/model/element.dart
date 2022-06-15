@@ -127,4 +127,9 @@ class RerollElement extends Element {
   int get value {
     return int.tryParse(content) ?? 0;
   }
+
+  @override
+  String toString() {
+    return ' ${type.name} $timesContent ${times.name} $content';
+  }
 }

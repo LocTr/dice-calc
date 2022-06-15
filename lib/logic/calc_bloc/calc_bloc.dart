@@ -17,6 +17,7 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
     on<OperatorAdded>(_onOperatorElementAdded);
     on<FilterConditionAdded>(_onFilterConditionAdded);
     on<FilterElementAdded>(_onFilterElementAdded);
+    on<RerollElementAdded>(_onRerollElementAdded);
     on<Calculate>(_onCalculate);
   }
 
@@ -188,6 +189,25 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
     }
   }
 
+  void _onFilterElementAdded(
+      FilterElementAdded event, Emitter<CalcState> emit) {
+    final currentList = state.elementList;
+
+    if (currentList.isEmpty) return;
+
+    if (currentList.last is DiceElement) {
+      final newElement = FilterElement(
+        content: '',
+        filterCondition: FilterCondition.none,
+        type: event.type,
+      );
+      emit(state.copyWith(
+        elementList: List.of(state.elementList)..add(newElement),
+      ));
+    }
+    return;
+  }
+
   void _onFilterConditionAdded(
       FilterConditionAdded event, Emitter<CalcState> emit) {
     final currentList = state.elementList;
@@ -210,23 +230,23 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
     return;
   }
 
-  void _onFilterElementAdded(
-      FilterElementAdded event, Emitter<CalcState> emit) {
+  void _onRerollElementAdded(
+      RerollElementAdded event, Emitter<CalcState> emit) {
     final currentList = state.elementList;
 
     if (currentList.isEmpty) return;
 
     if (currentList.last is DiceElement) {
-      final newElement = FilterElement(
-        content: '',
-        filterCondition: FilterCondition.none,
-        type: event.type,
-      );
+      final newElement = RerollElement(
+          content: '',
+          type: event.type,
+          condition: RerollCondition.none,
+          times: RerollTimes.once,
+          timesContent: '');
       emit(state.copyWith(
         elementList: List.of(state.elementList)..add(newElement),
       ));
     }
-    return;
   }
 
   void _onCalculate(Calculate event, Emitter<CalcState> emit) {

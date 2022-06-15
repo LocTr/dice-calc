@@ -56,6 +56,32 @@ class FilterConditionAdded extends CalcEvent {
   List<Object> get props => [condition];
 }
 
+class RerollElementAdded extends CalcEvent {
+  final RerollType type;
+
+  const RerollElementAdded({required this.type});
+
+  @override
+  List<Object> get props => [type];
+}
+
+class RerollTimesAdded extends CalcEvent {
+  final RerollTimes times;
+
+  const RerollTimesAdded({required this.times});
+
+  @override
+  List<Object> get props => [times];
+}
+
+class RerollConditionAdded extends CalcEvent {
+  final RerollCondition condition;
+
+  const RerollConditionAdded({required this.condition});
+  @override
+  List<Object> get props => [condition];
+}
+
 class Calculate extends CalcEvent {
   const Calculate();
 }

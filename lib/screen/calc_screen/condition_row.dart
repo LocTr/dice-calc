@@ -31,7 +31,11 @@ class ConditionRow extends StatelessWidget {
             );
             yield TextButton(
               child: const Text('reroll'),
-              onPressed: () {},
+              onPressed: () {
+                context
+                    .read<CalcBloc>()
+                    .add(const RerollElementAdded(type: RerollType.reroll));
+              },
             );
             yield TextButton(
               child: const Text('explode'),
