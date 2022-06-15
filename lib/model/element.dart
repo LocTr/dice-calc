@@ -28,10 +28,6 @@ class NumberElement extends Element {
 class DiceElement extends Element {
   const DiceElement({required int content}) : super(content: content);
 
-  DiceElement copyWith({required int content}) {
-    return DiceElement(content: content);
-  }
-
   @override
   String toString() {
     return content == 0 ? 'd' : 'd' + content.toString();
@@ -106,8 +102,33 @@ class RerollElement extends Element {
       required this.timesContent})
       : super(content: content);
 
+  RerollElement copyWith({
+    int? content,
+    RerollType? type,
+    RerollCondition? condition,
+    RerollTimes? times,
+    int? timesContent,
+  }) {
+    return RerollElement(
+        content: content ?? this.content,
+        type: type ?? this.type,
+        condition: condition ?? this.condition,
+        times: times ?? this.times,
+        timesContent: timesContent ?? this.timesContent);
+  }
+
   @override
   String toString() {
+    final contentStr = content == 0 ? '' : content.toString();
+    final timesContentStr =
+        timesContent == 0 ? '' : 'on ${timesContent.toString()}';
+
+    if (condition == RerollCondition.none) {
+      return ' ${type.name} $timesContentStr';
+    }
     return ' ${type.name} $timesContent ${times.name} $content';
   }
+
+  @override
+  List<Object> get props => [content, type, condition, times, timesContent];
 }

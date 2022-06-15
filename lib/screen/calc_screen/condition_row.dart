@@ -57,13 +57,6 @@ class ConditionRow extends StatelessWidget {
                     condition: FilterCondition.lowest));
               },
             );
-            yield TextButton(
-              child: const Text('only'),
-              onPressed: () {
-                context.read<CalcBloc>().add(const FilterConditionAdded(
-                    condition: FilterCondition.none));
-              },
-            );
             break;
           case RerollElement:
             break;
