@@ -2,7 +2,7 @@ import 'package:dice_calc/model/enums.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class Element extends Equatable {
-  final String content;
+  final int content;
   const Element({required this.content});
 
   @override
@@ -15,14 +15,10 @@ abstract class Element extends Equatable {
 }
 
 class NumberElement extends Element {
-  const NumberElement({required String content}) : super(content: content);
+  const NumberElement({required int content}) : super(content: content);
 
-  NumberElement copyWith({required String content}) {
+  NumberElement copyWith({required int content}) {
     return NumberElement(content: content);
-  }
-
-  int get value {
-    return int.tryParse(content) ?? 1;
   }
 
   @override
@@ -30,36 +26,28 @@ class NumberElement extends Element {
 }
 
 class DiceElement extends Element {
-  const DiceElement({required String content}) : super(content: content);
+  const DiceElement({required int content}) : super(content: content);
 
-  DiceElement copyWith({required String content}) {
+  DiceElement copyWith({required int content}) {
     return DiceElement(content: content);
-  }
-
-  int get value {
-    return int.tryParse(content) ?? 6;
   }
 
   @override
   String toString() {
-    return 'd' + content.toString();
+    return content == 0 ? 'd' : 'd' + content.toString();
   }
 }
 
 class ProcessedDiceElement extends Element {
   final int result;
-  const ProcessedDiceElement({required String content, required this.result})
+  const ProcessedDiceElement({required int content, required this.result})
       : super(content: content);
-
-  int get value {
-    return int.tryParse(content) ?? 6;
-  }
 }
 
 class OperatorElement extends Element {
   final Operator operator;
 
-  const OperatorElement({required this.operator}) : super(content: '');
+  const OperatorElement({required this.operator}) : super(content: 0);
 
   @override
   List<Object> get props => [operator];
@@ -84,21 +72,19 @@ class FilterElement extends Element {
   final FilterCondition filterCondition;
 
   const FilterElement(
-      {required content,
+      {required int content,
       required this.type,
       this.filterCondition = FilterCondition.none})
       : super(content: content);
 
-  int get value {
-    return int.tryParse(content) ?? 1;
-  }
-
   @override
   String toString() {
+    final contentStr = content == 0 ? '' : content.toString();
+
     if (filterCondition == FilterCondition.none) {
-      return ' ${type.name} $content ';
+      return ' ${type.name} $contentStr ';
     } else {
-      return ' ${type.name} $content ${filterCondition.name}';
+      return ' ${type.name} $contentStr ${filterCondition.name}';
     }
   }
 
@@ -110,23 +96,15 @@ class RerollElement extends Element {
   final RerollType type;
   final RerollCondition condition;
   final RerollTimes times;
-  final String timesContent;
+  final int timesContent;
 
   const RerollElement(
-      {required content,
+      {required int content,
       required this.type,
       required this.condition,
       required this.times,
       required this.timesContent})
       : super(content: content);
-
-  int get timesValue {
-    return int.tryParse(timesContent) ?? 0;
-  }
-
-  int get value {
-    return int.tryParse(content) ?? 0;
-  }
 
   @override
   String toString() {

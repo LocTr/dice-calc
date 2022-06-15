@@ -21,7 +21,7 @@ class CalcState extends Equatable {
 
   @override
   String toString() {
-    if (elementList.isEmpty) return '';
+    if (elementList.isEmpty) return '0';
 
     String result = '';
     for (var element in elementList) {

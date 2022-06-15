@@ -30,14 +30,18 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
       ));
       return;
     }
+
+    final lastElement = currentList.last;
+
+    if (lastElement.content == 0 && event.element.content == 0) return;
+
     switch (currentList.last.runtimeType) {
       case (NumberElement):
         final NumberElement lastElement =
             state.elementList.last as NumberElement;
-        if (lastElement.value == 0) return;
 
-        final NumberElement newElement =
-            NumberElement(content: lastElement.content + event.element.content);
+        final NumberElement newElement = NumberElement(
+            content: lastElement.content * 10 + event.element.content);
 
         emit(state.copyWith(
           elementList: List.of(state.elementList)
@@ -46,12 +50,8 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
         ));
         break;
       case (DiceElement):
-        final DiceElement lastElement = state.elementList.last as DiceElement;
-        if (lastElement.content == '' && event.element.content == '0') return;
-
-        final DiceElement newElement =
-            DiceElement(content: lastElement.content + event.element.content);
-
+        final DiceElement newElement = DiceElement(
+            content: lastElement.content * 10 + event.element.content);
         emit(state.copyWith(
           elementList: List.of(state.elementList)
             ..removeLast()
@@ -61,11 +61,10 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
       case (FilterElement):
         var lastElement = state.elementList.last as FilterElement;
         final newElement = FilterElement(
-          content: lastElement.content + event.element.content,
+          content: lastElement.content * 10 + event.element.content,
           type: lastElement.type,
           filterCondition: lastElement.filterCondition,
         );
-
         emit(state.copyWith(
           elementList: List.of(state.elementList)
             ..removeLast()
@@ -106,7 +105,7 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
     switch (currentList.last.runtimeType) {
       case NumberElement:
         final lastElement = currentList.last as NumberElement;
-        if (lastElement.content.length == 1) {
+        if (lastElement.content < 10) {
           emit(state.copyWith(
             elementList: List.of(state.elementList)..removeLast(),
           ));
@@ -114,14 +113,13 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
           emit(state.copyWith(
               elementList: List.of(state.elementList)
                 ..removeLast()
-                ..add(lastElement.copyWith(
-                    content: lastElement.content
-                        .substring(0, lastElement.content.length - 1)))));
+                ..add(
+                    lastElement.copyWith(content: lastElement.content ~/ 10))));
         }
         break;
       case DiceElement:
         final lastElement = currentList.last as DiceElement;
-        if (lastElement.content.isEmpty) {
+        if (lastElement.content == 0) {
           emit(state.copyWith(
             elementList: List.of(state.elementList)..removeLast(),
           ));
@@ -129,9 +127,8 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
           emit(state.copyWith(
               elementList: List.of(state.elementList)
                 ..removeLast()
-                ..add(lastElement.copyWith(
-                    content: lastElement.content
-                        .substring(0, lastElement.content.length - 1)))));
+                ..add(
+                    lastElement.copyWith(content: lastElement.content ~/ 10))));
         }
         break;
       case FilterElement:
@@ -146,7 +143,7 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
                 filterCondition: FilterCondition.none,
               )),
           ));
-        } else if (lastElement.content.isEmpty) {
+        } else if (lastElement.content == 0) {
           emit(state.copyWith(
               elementList: List.of(state.elementList)..removeLast()));
         } else {
@@ -156,8 +153,7 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
               ..add(FilterElement(
                 type: lastElement.type,
                 filterCondition: lastElement.filterCondition,
-                content: lastElement.content
-                    .substring(0, lastElement.content.length - 1),
+                content: lastElement.content ~/ 10,
               )),
           ));
         }
@@ -197,7 +193,7 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
 
     if (currentList.last is DiceElement) {
       final newElement = FilterElement(
-        content: '',
+        content: 0,
         filterCondition: FilterCondition.none,
         type: event.type,
       );
@@ -238,11 +234,11 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
 
     if (currentList.last is DiceElement) {
       final newElement = RerollElement(
-          content: '',
+          content: 0,
           type: event.type,
-          condition: RerollCondition.none,
+          condition: RerollCondition.only,
           times: RerollTimes.once,
-          timesContent: '');
+          timesContent: 0);
       emit(state.copyWith(
         elementList: List.of(state.elementList)..add(newElement),
       ));
@@ -251,6 +247,8 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
 
   void _onCalculate(Calculate event, Emitter<CalcState> emit) {
     try {
+      if (state.elementList.isEmpty) return;
+
       int result = calculate(state.elementList);
 
       emit(state.copyWith(resultScreen: result.toString()));

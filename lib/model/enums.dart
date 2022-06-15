@@ -30,7 +30,6 @@ enum RerollType {
 }
 
 enum RerollCondition {
-  none,
   only,
   more,
   less,
