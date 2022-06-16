@@ -70,7 +70,7 @@ List<Element> _reduceDice(List<Element> input) {
     }
 
     switch (rerollElement.condition) {
-      case (RerollCondition.only):
+      case RerollCondition.only:
         for (int i = 0; i < result.length; i++) {
           int times = 0;
           while (result[i] == rerollElement.content &&
@@ -83,7 +83,7 @@ List<Element> _reduceDice(List<Element> input) {
           }
         }
         break;
-      case (RerollCondition.less):
+      case RerollCondition.less:
         for (int i = 0; i < result.length; i++) {
           if (diceValue <= rerollElement.content) {
             throw DiceException('range err');
@@ -97,7 +97,7 @@ List<Element> _reduceDice(List<Element> input) {
           }
         }
         break;
-      case (RerollCondition.more):
+      case RerollCondition.more:
         for (int i = 0; i < result.length; i++) {
           if (rerollElement.content <= 1) {
             throw DiceException('range err');
@@ -110,6 +110,8 @@ List<Element> _reduceDice(List<Element> input) {
           }
         }
         break;
+      case RerollCondition.none:
+        throw DiceException('range err');
     }
     return result;
   }
@@ -123,7 +125,7 @@ List<Element> _reduceDice(List<Element> input) {
     }
 
     switch (rerollElement.condition) {
-      case (RerollCondition.only):
+      case RerollCondition.only:
         for (int i = 0; i < result.length; i++) {
           int times = 0;
           while (result[i] == rerollElement.content &&
@@ -137,7 +139,7 @@ List<Element> _reduceDice(List<Element> input) {
           }
         }
         break;
-      case (RerollCondition.less):
+      case RerollCondition.less:
         for (int i = 0; i < result.length; i++) {
           if (diceValue <= rerollElement.content) {
             throw DiceException('range err');
@@ -152,7 +154,7 @@ List<Element> _reduceDice(List<Element> input) {
           }
         }
         break;
-      case (RerollCondition.more):
+      case RerollCondition.more:
         for (int i = 0; i < result.length; i++) {
           if (rerollElement.content <= 1) {
             throw DiceException('range err');
@@ -166,6 +168,8 @@ List<Element> _reduceDice(List<Element> input) {
           }
         }
         break;
+      case RerollCondition.none:
+        throw DiceException('missing arg');
     }
     result.addAll(explodedDice);
     return result;
