@@ -1,3 +1,4 @@
+import 'package:dice_calc/logic/persistence/transaction.dart';
 import 'package:flutter/material.dart';
 
 class HistoryDialog extends StatelessWidget {
@@ -5,16 +6,29 @@ class HistoryDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> getDataToList() {
+      Map data = HistoryDB.readAll();
+      var result = <Widget>[];
+
+      data.forEach((key, value) {
+        result.add(Text(value[0]));
+        result.add(Text(value[1]));
+      });
+      return result;
+    }
+
     return Dialog(
       alignment: Alignment.bottomCenter,
       insetPadding: const EdgeInsets.only(top: 200),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(4)),
       ),
-      child: Container(
+      child: SizedBox(
           width: double.infinity,
           height: MediaQuery.of(context).size.height * 0.6,
-          child: Text("There's no history yet")),
+          child: ListView(
+            children: getDataToList(),
+          )),
     );
   }
 }

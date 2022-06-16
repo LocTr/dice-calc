@@ -119,14 +119,36 @@ class RerollElement extends Element {
 
   @override
   String toString() {
-    final contentStr = content == 0 ? '' : content.toString();
-    final timesContentStr =
-        timesContent == 0 ? '' : 'on ${timesContent.toString()}';
+    final String contentStr;
+    final String timesContentStr;
 
-    if (condition == RerollCondition.none) {
-      return ' ${type.name} $timesContentStr';
+    switch (times) {
+      case RerollTimes.always:
+        timesContentStr = 'always';
+        break;
+      case RerollTimes.specific:
+        timesContentStr = '$timesContent times';
+        break;
+      case RerollTimes.none:
+        timesContentStr = '';
+        break;
     }
-    return ' ${type.name} $timesContent ${times.name} $content';
+
+    switch (condition) {
+      case RerollCondition.none:
+        contentStr = '';
+        break;
+      case RerollCondition.only:
+        contentStr = 'on $content';
+        break;
+      case RerollCondition.more:
+        contentStr = 'on $content or more';
+        break;
+      case RerollCondition.less:
+        contentStr = 'on $content or less';
+        break;
+    }
+    return ' ${type.name} $timesContentStr $contentStr';
   }
 
   @override

@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:dice_calc/logic/core/calc_logic.dart';
+import 'package:dice_calc/logic/persistence/transaction.dart';
 import 'package:dice_calc/model/element.dart';
 import 'package:dice_calc/model/enums.dart';
 import 'package:dice_calc/model/exception/dice_exception.dart';
@@ -18,6 +19,8 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
     on<FilterConditionAdded>(_onFilterConditionAdded);
     on<FilterElementAdded>(_onFilterElementAdded);
     on<RerollElementAdded>(_onRerollElementAdded);
+    on<RerollConditionAdded>(_onRerollConditionAdded);
+    on<RerollTimesAdded>(_onRerollTimesAdded);
     on<Calculate>(_onCalculate);
   }
 
@@ -299,6 +302,37 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
     }
   }
 
+  void _onRerollConditionAdded(
+      RerollConditionAdded event, Emitter<CalcState> emit) {
+    final currentList = state.elementList;
+
+    if (currentList.isEmpty) return;
+
+    if (currentList.last is RerollElement) {
+      final lastElement = currentList.last as RerollElement;
+      emit(state.copyWith(
+        elementList: List.of(state.elementList)
+          ..removeLast()
+          ..add(lastElement.copyWith(condition: event.condition)),
+      ));
+    }
+  }
+
+  void _onRerollTimesAdded(RerollTimesAdded event, Emitter<CalcState> emit) {
+    final currentList = state.elementList;
+
+    if (currentList.isEmpty) return;
+
+    if (currentList.last is RerollElement) {
+      final lastElement = currentList.last as RerollElement;
+      emit(state.copyWith(
+        elementList: List.of(state.elementList)
+          ..removeLast()
+          ..add(lastElement.copyWith(times: event.times)),
+      ));
+    }
+  }
+
   void _onCalculate(Calculate event, Emitter<CalcState> emit) {
     try {
       if (state.elementList.isEmpty) return;
@@ -306,6 +340,9 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
       int result = calculate(state.elementList);
 
       emit(state.copyWith(resultScreen: result.toString()));
+
+      HistoryDB.put(equator: state.toString(), result: result.toString());
+
       return;
     } on DiceException catch (e) {
       emit(state.copyWith(resultScreen: e.cause.toString()));

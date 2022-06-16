@@ -7,12 +7,6 @@ import 'package:dice_calc/widget/calc_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-enum _State {
-  none,
-  filter,
-  reroll,
-}
-
 class CalcButtonGrid extends StatelessWidget {
   const CalcButtonGrid({
     Key? key,
@@ -20,21 +14,6 @@ class CalcButtonGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _State getCurrentState() {
-      var result = _State.none;
-      var calcState = context.read<CalcBloc>().state;
-      if (calcState.elementList.isNotEmpty) {
-        if (calcState.elementList.last is FilterElement) {
-          result = _State.filter;
-        }
-        // else if (calcState.elementList.last is RerollElement) {
-        //   result = _State.reroll
-        // }
-      }
-
-      return result;
-    }
-
     return Column(
       children: [
         Row(

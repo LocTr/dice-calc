@@ -59,6 +59,42 @@ class ConditionRow extends StatelessWidget {
             );
             break;
           case RerollElement:
+            final lastElement = state.elementList.last as RerollElement;
+            if (lastElement.times != RerollTimes.none) {
+              if (lastElement.condition == RerollCondition.none) {
+                yield TextButton(
+                  child: const Text('on'),
+                  onPressed: () {
+                    context.read<CalcBloc>().add(const RerollConditionAdded(
+                        condition: RerollCondition.only));
+                  },
+                );
+              } else {
+                yield TextButton(
+                  child: const Text('or more'),
+                  onPressed: () {
+                    context.read<CalcBloc>().add(const RerollConditionAdded(
+                        condition: RerollCondition.more));
+                  },
+                );
+                yield TextButton(
+                  child: const Text('or less'),
+                  onPressed: () {
+                    context.read<CalcBloc>().add(const RerollConditionAdded(
+                        condition: RerollCondition.less));
+                  },
+                );
+              }
+            } else {
+              yield TextButton(
+                child: const Text('always'),
+                onPressed: () {
+                  context
+                      .read<CalcBloc>()
+                      .add(const RerollTimesAdded(times: RerollTimes.always));
+                },
+              );
+            }
             break;
           default:
         }
