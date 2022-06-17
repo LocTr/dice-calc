@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:dice_calc/logic/core/calc_logic.dart';
-import 'package:dice_calc/logic/persistence/transaction.dart';
+import 'package:dice_calc/logic/persistence/historyDB.dart';
 import 'package:dice_calc/model/element.dart';
 import 'package:dice_calc/model/enums.dart';
 import 'package:dice_calc/model/exception/dice_exception.dart';

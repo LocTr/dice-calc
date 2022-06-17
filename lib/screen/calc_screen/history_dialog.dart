@@ -1,4 +1,4 @@
-import 'package:dice_calc/logic/persistence/transaction.dart';
+import 'package:dice_calc/logic/persistence/historyDB.dart';
 import 'package:flutter/material.dart';
 
 class HistoryDialog extends StatelessWidget {
