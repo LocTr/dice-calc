@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:dice_calc/logic/calc_bloc/calc_bloc.dart';
+import 'package:dice_calc/bloc/calc_bloc/calc_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -12,12 +12,10 @@ class CalcView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade200,
       body: SafeArea(
         child: SizedBox.expand(
           child: Container(
             padding: const EdgeInsets.all(4),
-            color: Colors.white70,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [

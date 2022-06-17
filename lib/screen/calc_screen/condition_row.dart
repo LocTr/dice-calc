@@ -1,4 +1,4 @@
-import 'package:dice_calc/logic/calc_bloc/calc_bloc.dart';
+import 'package:dice_calc/bloc/calc_bloc/calc_bloc.dart';
 import 'package:dice_calc/model/element.dart';
 import 'package:dice_calc/model/enums.dart';
 import 'package:flutter/material.dart';

@@ -16,15 +16,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        // textButtonTheme: TextButtonThemeData(
-        //   style: ButtonStyle(
-        //     backgroundColor: MaterialStateProperty.all(Colors.black87),
-        //     foregroundColor: MaterialStateProperty.all(Colors.white70),
-        //   ),
-        // ),
-      ),
+      // theme: ThemeData(
+      //   primarySwatch: Colors.blue,
+      //   // textButtonTheme: TextButtonThemeData(
+      //   //   style: ButtonStyle(
+      //   //     backgroundColor: MaterialStateProperty.all(Colors.black87),
+      //   //     foregroundColor: MaterialStateProperty.all(Colors.white70),
+      //   //   ),
+      //   // ),
+      // ),
+      theme: ThemeData.dark(),
       home: const CalcPage(),
     );
   }

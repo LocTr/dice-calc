@@ -7,7 +7,6 @@ class SettingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
         leading: IconButton(
             icon: const Icon(Icons.arrow_back),
