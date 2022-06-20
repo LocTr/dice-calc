@@ -29,6 +29,8 @@ class CalcView extends StatelessWidget {
                         builder: (context, state) {
                           return Flexible(
                             child: Text(
+                              textAlign: TextAlign.right,
+                              maxLines: 2,
                               context.watch<CalcBloc>().state.toString(),
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(

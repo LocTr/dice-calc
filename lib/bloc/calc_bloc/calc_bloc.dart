@@ -78,23 +78,15 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
         var lastElement = state.elementList.last as RerollElement;
 
         final RerollElement newElement;
-        if (lastElement.condition == RerollCondition.none) {
-          newElement = RerollElement(
-            type: lastElement.type,
-            timesContent: lastElement.timesContent * 10 + event.element.content,
-            content: lastElement.content,
-            condition: lastElement.condition,
-            times: RerollTimes.specific,
-          );
-        } else {
-          newElement = RerollElement(
-            type: lastElement.type,
-            content: lastElement.content * 10 + event.element.content,
-            condition: lastElement.condition,
-            timesContent: lastElement.timesContent,
-            times: lastElement.times,
-          );
-        }
+
+        newElement = RerollElement(
+          type: lastElement.type,
+          content: lastElement.content * 10 + event.element.content,
+          condition: lastElement.condition,
+          timesContent: lastElement.timesContent,
+          times: lastElement.times,
+        );
+
         emit(state.copyWith(
           elementList: List.of(state.elementList)
             ..removeLast()
@@ -189,31 +181,22 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
         break;
       case RerollElement:
         final lastElement = currentList.last as RerollElement;
-        if (lastElement.condition != RerollCondition.none) {
-          emit(state.copyWith(
-              elementList: List.of(state.elementList)
-                ..removeLast()
-                ..add(lastElement.copyWith(
-                  condition: RerollCondition.none,
-                ))));
-        } else if (lastElement.content != 0) {
+        if (lastElement.content != 0) {
           emit(state.copyWith(
               elementList: List.of(state.elementList)
                 ..removeLast()
                 ..add(
                     lastElement.copyWith(content: lastElement.content ~/ 10))));
-        } else if (lastElement.timesContent != 0) {
+        } else if (lastElement.condition != RerollCondition.only) {
           emit(state.copyWith(
               elementList: List.of(state.elementList)
                 ..removeLast()
-                ..add(lastElement.copyWith(
-                    timesContent: lastElement.timesContent ~/ 10))));
+                ..add(lastElement.copyWith(condition: RerollCondition.only))));
         } else {
           emit(state.copyWith(
             elementList: List.of(state.elementList)..removeLast(),
           ));
         }
-
         break;
       default:
         emit(state.copyWith(
@@ -293,8 +276,8 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
       final newElement = RerollElement(
           content: 0,
           type: event.type,
-          condition: RerollCondition.none,
-          times: RerollTimes.none,
+          condition: RerollCondition.only,
+          times: RerollTimes.always,
           timesContent: 0);
       emit(state.copyWith(
         elementList: List.of(state.elementList)..add(newElement),

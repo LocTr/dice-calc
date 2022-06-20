@@ -110,8 +110,6 @@ List<Element> _reduceDice(List<Element> input) {
           }
         }
         break;
-      case RerollCondition.none:
-        throw DiceException('range err');
     }
     return result;
   }
@@ -168,8 +166,6 @@ List<Element> _reduceDice(List<Element> input) {
           }
         }
         break;
-      case RerollCondition.none:
-        throw DiceException('missing arg');
     }
     result.addAll(explodedDice);
     return result;

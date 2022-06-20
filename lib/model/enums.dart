@@ -17,8 +17,11 @@ enum FilterCondition {
 }
 
 enum RerollType {
-  reroll,
-  explode,
+  reroll('r'),
+  explode('e');
+
+  const RerollType(this.content);
+  final String content;
 }
 
 enum RerollTimes {
@@ -28,8 +31,10 @@ enum RerollTimes {
 }
 
 enum RerollCondition {
-  none,
-  only,
-  more,
-  less,
+  only(''),
+  more('\u2265'),
+  less('\u2264');
+
+  const RerollCondition(this.content);
+  final String content;
 }
