@@ -68,6 +68,7 @@ List<Element> _reduceDice(List<Element> input) {
     for (var dice in result) {
       stdout.write(dice.toString() + ', ');
     }
+    print('rerolling');
 
     switch (rerollElement.condition) {
       case RerollCondition.only:
@@ -88,12 +89,8 @@ List<Element> _reduceDice(List<Element> input) {
           if (diceValue <= rerollElement.content) {
             throw DiceException('range err');
           }
-
-          int times = 0;
-          while (result[i] <= rerollElement.content &&
-              times < rerollElement.timesContent) {
+          while (result[i] <= rerollElement.content) {
             result[i] = _roll(diceValue);
-            (rerollElement.times != RerollTimes.always) ? times++ : null;
           }
         }
         break;
@@ -122,18 +119,14 @@ List<Element> _reduceDice(List<Element> input) {
       stdout.write(dice.toString() + ', ');
     }
 
+    print('explode');
+
     switch (rerollElement.condition) {
       case RerollCondition.only:
         for (int i = 0; i < result.length; i++) {
-          int times = 0;
-          while (result[i] == rerollElement.content &&
-              times < rerollElement.timesContent) {
-            explodedDice.add(result[i]);
-            result[i] = _roll(diceValue);
-            for (var dice in result) {
-              stdout.write(dice.toString() + ', ');
-            }
-            (rerollElement.times != RerollTimes.always) ? times++ : null;
+          if (result[i] == rerollElement.content) {
+            result.add(_roll(diceValue));
+            print(result.length);
           }
         }
         break;
@@ -148,7 +141,6 @@ List<Element> _reduceDice(List<Element> input) {
               times < rerollElement.timesContent) {
             explodedDice.add(result[i]);
             result[i] = _roll(diceValue);
-            (rerollElement.times != RerollTimes.always) ? times++ : null;
           }
         }
         break;
@@ -177,36 +169,40 @@ List<Element> _reduceDice(List<Element> input) {
     for (var i = 0; i < list.length; i++) {
       if (list[i] is! DiceElement) continue;
 
+      var result = <int>[];
       var currentDice = list[i] as DiceElement;
       if (i == 0) {
-        list[i] = NumberElement(content: _roll(currentDice.content));
-      } else if (list[i - 1] is! NumberElement) {
-        list[i] = NumberElement(content: _roll(currentDice.content));
+        result.add(_roll(currentDice.content));
+      } else if ((list[i - 1] is! NumberElement)) {
+        result.add(_roll(currentDice.content));
       } else {
-        var result = <int>[];
         for (var num = 0; num < (list[i - 1] as NumberElement).content; num++) {
           result.add(_roll(currentDice.content));
         }
-        if (i != list.length - 1) {
-          if (list[i + 1] is FilterElement) {
-            result = _filter(result, list[i + 1] as FilterElement);
-            list.removeAt(i + 1);
-          } else if (list[i + 1] is RerollElement) {
-            if ((list[i + 1] as RerollElement).type == RerollType.reroll) {
-              result = _reroll(
-                  result, currentDice.content, list[i + 1] as RerollElement);
-            } else {
-              result = _explode(
-                  result, currentDice.content, list[i + 1] as RerollElement);
-            }
+      }
+
+      if (i != list.length - 1) {
+        if (list[i + 1] is FilterElement) {
+          print('is filter');
+          result = _filter(result, list[i + 1] as FilterElement);
+          list.removeAt(i + 1);
+        } else if (list[i + 1] is RerollElement) {
+          print('is reroll');
+          if ((list[i + 1] as RerollElement).type == RerollType.reroll) {
+            result = _reroll(
+                result, currentDice.content, list[i + 1] as RerollElement);
+          } else {
+            result = _explode(
+                result, currentDice.content, list[i + 1] as RerollElement);
           }
         }
-        final int intResult =
-            result.fold(0, (previousValue, element) => previousValue + element);
-        list[i] = NumberElement(content: intResult);
-        list.removeAt(i - 1);
       }
+      final int intResult =
+          result.fold(0, (previousValue, element) => previousValue + element);
+      list[i] = NumberElement(content: intResult);
+      list.removeAt(i - 1);
     }
+
     return list;
   }
 
