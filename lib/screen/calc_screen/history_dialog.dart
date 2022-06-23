@@ -26,8 +26,20 @@ class HistoryDialog extends StatelessWidget {
       child: SizedBox(
           width: double.infinity,
           height: MediaQuery.of(context).size.height * 0.6,
-          child: ListView(
-            children: getDataToList(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: ListView(
+                  children: getDataToList(),
+                ),
+              ),
+              IconButton(
+                  onPressed: () {
+                    HistoryDB.clear();
+                  },
+                  icon: const Icon(Icons.delete_outline)),
+            ],
           )),
     );
   }

@@ -10,4 +10,9 @@ class HistoryDB {
     var box = Hive.box('historyBox');
     return box.toMap();
   }
+
+  static void clear() {
+    var box = Hive.box('historyBox');
+    box.clear();
+  }
 }
