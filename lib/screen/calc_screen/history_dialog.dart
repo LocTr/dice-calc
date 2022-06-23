@@ -8,13 +8,19 @@ class HistoryDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Widget> getDataToList() {
       Map data = HistoryDB.readAll();
-      var result = <Widget>[];
+      var resultList = <Widget>[];
 
+      var lastValue = '';
       data.forEach((key, value) {
-        result.add(Text(value[0]));
-        result.add(Text(value[1]));
+        String equator = value[0];
+        String result = value[1];
+        resultList.add(ArchiveRow(
+          header: (lastValue != equator) ? equator : null,
+          text: result,
+        ));
+        lastValue = equator;
       });
-      return result;
+      return resultList;
     }
 
     return Dialog(
@@ -31,6 +37,8 @@ class HistoryDialog extends StatelessWidget {
             children: [
               Expanded(
                 child: ListView(
+                  padding: const EdgeInsets.all(10),
+                  physics: const ClampingScrollPhysics(),
                   children: getDataToList(),
                 ),
               ),
@@ -41,6 +49,38 @@ class HistoryDialog extends StatelessWidget {
                   icon: const Icon(Icons.delete_outline)),
             ],
           )),
+    );
+  }
+}
+
+class ArchiveRow extends StatelessWidget {
+  final String? header;
+  final String text;
+  const ArchiveRow({
+    Key? key,
+    this.header,
+    required this.text,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        if (header != null)
+          Text(
+            '$header =',
+            textScaleFactor: 0.7,
+            style: Theme.of(context).textTheme.headline3,
+          ),
+        Text(
+          text,
+          style: Theme.of(context)
+              .textTheme
+              .headline3
+              ?.copyWith(color: Theme.of(context).primaryColor),
+        ),
+      ],
     );
   }
 }

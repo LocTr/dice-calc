@@ -30,6 +30,10 @@ class ElementRemoved extends CalcEvent {
   const ElementRemoved();
 }
 
+class ElementCleared extends CalcEvent {
+  const ElementCleared();
+}
+
 class OperatorAdded extends CalcEvent {
   final Operator operator;
 

@@ -15,6 +15,7 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
     on<NumberAdded>(_onNumberElementAdded);
     on<DiceAdded>(_onDiceElementAdded);
     on<ElementRemoved>(_onElementRemoved);
+    on<ElementCleared>(_onElementCleared);
     on<OperatorAdded>(_onOperatorElementAdded);
     on<FilterConditionAdded>(_onFilterConditionAdded);
     on<FilterElementAdded>(_onFilterElementAdded);
@@ -204,6 +205,10 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
         ));
         return;
     }
+  }
+
+  void _onElementCleared(ElementCleared event, Emitter<CalcState> emit) {
+    emit(const CalcState());
   }
 
   void _onOperatorElementAdded(OperatorAdded event, Emitter<CalcState> emit) {

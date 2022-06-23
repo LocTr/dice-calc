@@ -29,11 +29,15 @@ class CalcButtonGrid extends StatelessWidget {
                       });
                 },
                 icon: const Icon(Icons.history)),
-            IconButton(
-                onPressed: () {
-                  context.read<CalcBloc>().add(const ElementRemoved());
-                },
-                icon: const Icon(Icons.backspace_outlined)),
+            TextButton(
+              child: const Icon(Icons.backspace_outlined),
+              onPressed: () {
+                context.read<CalcBloc>().add(const ElementRemoved());
+              },
+              onLongPress: () {
+                context.read<CalcBloc>().add(const ElementCleared());
+              },
+            )
           ],
         ),
         const Divider(),
