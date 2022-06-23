@@ -5,21 +5,22 @@ import 'package:dice_calc/model/element.dart';
 import 'package:dice_calc/model/enums.dart';
 import 'package:dice_calc/model/exception/dice_exception.dart';
 
-// void main(List<String> args) {
-//   List<Element> list = const [
-//     NumberElement(content: '1'),
-//     DiceElement(content: '2'),
-//     RerollElement(
-//         content: '2',
-//         type: RerollType.explode,
-//         condition: RerollCondition.only,
-//         times: RerollTimes.specific,
-//         timesContent: '3'),
-//   ];
-//   for (var i = 0; i < 10; i++) {
-//     int result = calculate(list);
-//   }
-// }
+void main(List<String> args) {
+  List<Element> list = const [
+    // NumberElement(content: 1),
+    DiceElement(content: 6),
+    RerollElement(
+        content: 5,
+        type: RerollType.reroll,
+        condition: RerollCondition.less,
+        times: RerollTimes.always,
+        timesContent: 3),
+  ];
+  for (var i = 0; i < 10; i++) {
+    int result = calculate(list);
+    print('result :' + result.toString());
+  }
+}
 
 int calculate(List<Element> input) {
   List<Element> list = List.of(input);
@@ -68,7 +69,6 @@ List<Element> _reduceDice(List<Element> input) {
     for (var dice in result) {
       stdout.write(dice.toString() + ', ');
     }
-    print('rerolling');
 
     switch (rerollElement.condition) {
       case RerollCondition.only:
@@ -119,14 +119,11 @@ List<Element> _reduceDice(List<Element> input) {
       stdout.write(dice.toString() + ', ');
     }
 
-    print('explode');
-
     switch (rerollElement.condition) {
       case RerollCondition.only:
         for (int i = 0; i < result.length; i++) {
           if (result[i] == rerollElement.content) {
             result.add(_roll(diceValue));
-            print(result.length);
           }
         }
         break;
@@ -179,15 +176,15 @@ List<Element> _reduceDice(List<Element> input) {
         for (var num = 0; num < (list[i - 1] as NumberElement).content; num++) {
           result.add(_roll(currentDice.content));
         }
+        list.removeAt(i - 1);
+        i--;
       }
 
       if (i != list.length - 1) {
         if (list[i + 1] is FilterElement) {
-          print('is filter');
           result = _filter(result, list[i + 1] as FilterElement);
           list.removeAt(i + 1);
         } else if (list[i + 1] is RerollElement) {
-          print('is reroll');
           if ((list[i + 1] as RerollElement).type == RerollType.reroll) {
             result = _reroll(
                 result, currentDice.content, list[i + 1] as RerollElement);
@@ -200,7 +197,6 @@ List<Element> _reduceDice(List<Element> input) {
       final int intResult =
           result.fold(0, (previousValue, element) => previousValue + element);
       list[i] = NumberElement(content: intResult);
-      list.removeAt(i - 1);
     }
 
     return list;
