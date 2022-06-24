@@ -19,6 +19,9 @@ class CalcView extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
+                SizedBox(
+                  height: 50,
+                ),
                 Container(
                   padding: const EdgeInsets.all(8.0),
                   width: double.infinity,
@@ -27,7 +30,7 @@ class CalcView extends StatelessWidget {
                     children: [
                       BlocBuilder<CalcBloc, CalcState>(
                         builder: (context, state) {
-                          return Flexible(
+                          return Expanded(
                             child: Text(
                               textAlign: TextAlign.right,
                               maxLines: 2,

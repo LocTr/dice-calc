@@ -3,7 +3,7 @@ import 'package:dice_calc/bloc/history_cubit/history_cubit.dart';
 import 'package:dice_calc/model/element.dart';
 import 'package:dice_calc/model/enums.dart';
 import 'package:dice_calc/screen/calc_screen/condition_row.dart';
-import 'package:dice_calc/screen/calc_screen/history_dialog.dart';
+import 'package:dice_calc/screen/popup/history_dialog.dart';
 import 'package:dice_calc/widget/calc_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,34 +17,57 @@ class CalcButtonGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        SizedBox(
+          height: 50,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: const [
+              ConditionRow(),
+            ],
+          ),
+        ),
+        const Divider(),
         Row(
-          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            const ConditionRow(),
-            IconButton(
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return BlocProvider(
-                          create: (context) => HistoryCubit(),
-                          child: const HistoryDialog(),
-                        );
-                      });
-                },
-                icon: const Icon(Icons.history)),
-            TextButton(
-              child: const Icon(Icons.backspace_outlined),
+            Expanded(
+                child: CalcButton(
+              child: const Icon(Icons.access_time_outlined),
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return BlocProvider(
+                        create: (context) => HistoryCubit(),
+                        child: const HistoryDialog(),
+                      );
+                    });
+              },
+            )),
+            Expanded(
+                child: CalcButton(
+              childText: 'C',
+              onPressed: () {
+                context.read<CalcBloc>().add(const ElementCleared());
+              },
+            )),
+            Expanded(
+                child: CalcButton(
+              childText: 'CE',
               onPressed: () {
                 context.read<CalcBloc>().add(const ElementRemoved());
               },
-              onLongPress: () {
-                context.read<CalcBloc>().add(const ElementCleared());
+            )),
+            Expanded(
+                child: CalcButton(
+              childText: '\u00f7',
+              onPressed: () {
+                context
+                    .read<CalcBloc>()
+                    .add(const OperatorAdded(operator: Operator.divided));
               },
-            )
+            )),
           ],
         ),
-        const Divider(),
         Row(
           children: [
             Expanded(
@@ -76,11 +99,11 @@ class CalcButtonGrid extends StatelessWidget {
             )),
             Expanded(
                 child: CalcButton(
-              childText: '÷',
+              childText: '\u00d7',
               onPressed: () {
                 context
                     .read<CalcBloc>()
-                    .add(const OperatorAdded(operator: Operator.divided));
+                    .add(const OperatorAdded(operator: Operator.multiply));
               },
             )),
           ],
@@ -116,11 +139,11 @@ class CalcButtonGrid extends StatelessWidget {
             )),
             Expanded(
                 child: CalcButton(
-              childText: '\u00d7',
+              childText: '\u2212',
               onPressed: () {
                 context
                     .read<CalcBloc>()
-                    .add(const OperatorAdded(operator: Operator.multiply));
+                    .add(const OperatorAdded(operator: Operator.minus));
               },
             )),
           ],
@@ -156,17 +179,21 @@ class CalcButtonGrid extends StatelessWidget {
             )),
             Expanded(
                 child: CalcButton(
-              childText: '\u2212',
+              childText: '+',
               onPressed: () {
                 context
                     .read<CalcBloc>()
-                    .add(const OperatorAdded(operator: Operator.minus));
+                    .add(const OperatorAdded(operator: Operator.plus));
               },
             )),
           ],
         ),
         Row(
           children: [
+            const Expanded(
+                child: CalcButton(
+              child: const Icon(Icons.favorite_border),
+            )),
             Expanded(
                 child: CalcButton(
               childText: '0',
@@ -190,15 +217,6 @@ class CalcButtonGrid extends StatelessWidget {
               childText: '=',
               onPressed: () {
                 context.read<CalcBloc>().add(const Calculate());
-              },
-            )),
-            Expanded(
-                child: CalcButton(
-              childText: '+',
-              onPressed: () {
-                context
-                    .read<CalcBloc>()
-                    .add(const OperatorAdded(operator: Operator.plus));
               },
             )),
           ],

@@ -5,22 +5,22 @@ import 'package:dice_calc/model/element.dart';
 import 'package:dice_calc/model/enums.dart';
 import 'package:dice_calc/model/exception/dice_exception.dart';
 
-void main(List<String> args) {
-  List<Element> list = const [
-    // NumberElement(content: 1),
-    DiceElement(content: 6),
-    RerollElement(
-        content: 5,
-        type: RerollType.reroll,
-        condition: RerollCondition.less,
-        times: RerollTimes.always,
-        timesContent: 3),
-  ];
-  for (var i = 0; i < 10; i++) {
-    int result = calculate(list);
-    print('result :' + result.toString());
-  }
-}
+// void main(List<String> args) {
+//   List<Element> list = const [
+//     // NumberElement(content: 1),
+//     DiceElement(content: 6),
+//     RerollElement(
+//         content: 5,
+//         type: RerollType.reroll,
+//         condition: RerollCondition.less,
+//         times: RerollTimes.always,
+//         timesContent: 3),
+//   ];
+//   for (var i = 0; i < 10; i++) {
+//     int result = calculate(list);
+//     print('result :' + result.toString());
+//   }
+// }
 
 int calculate(List<Element> input) {
   List<Element> list = List.of(input);

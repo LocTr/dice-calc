@@ -1,14 +1,14 @@
-enum darkMode {
+enum DarkMode {
   light,
   dark,
   system,
 }
 
-enum waitTime {
+enum WaitTime {
   opt_1(0.5),
   opt_2(1),
   opt_3(2);
 
-  const waitTime(this.value);
+  const WaitTime(this.value);
   final num value;
 }
