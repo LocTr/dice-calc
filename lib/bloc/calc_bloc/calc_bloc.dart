@@ -39,6 +39,8 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
 
     if (lastElement.content == 0 && event.element.content == 0) return;
 
+    if (lastElement.content >= 9999999) return;
+
     switch (currentList.last.runtimeType) {
       case (NumberElement):
         final NumberElement lastElement =
