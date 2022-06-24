@@ -1,4 +1,5 @@
 import 'package:dice_calc/bloc/calc_bloc/calc_bloc.dart';
+import 'package:dice_calc/bloc/history_cubit/history_cubit.dart';
 import 'package:dice_calc/model/element.dart';
 import 'package:dice_calc/model/enums.dart';
 import 'package:dice_calc/screen/calc_screen/condition_row.dart';
@@ -25,7 +26,10 @@ class CalcButtonGrid extends StatelessWidget {
                   showDialog(
                       context: context,
                       builder: (context) {
-                        return const HistoryDialog();
+                        return BlocProvider(
+                          create: (context) => HistoryCubit(),
+                          child: const HistoryDialog(),
+                        );
                       });
                 },
                 icon: const Icon(Icons.history)),

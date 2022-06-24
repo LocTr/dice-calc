@@ -1,5 +1,6 @@
-import 'package:dice_calc/logic/persistence/historyDB.dart';
+import 'package:dice_calc/bloc/history_cubit/history_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HistoryDialog extends StatelessWidget {
   const HistoryDialog({Key? key}) : super(key: key);
@@ -7,10 +8,11 @@ class HistoryDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Widget> getDataToList() {
-      Map data = HistoryDB.readAll();
-      var resultList = <Widget>[];
+      Map data = context.read<HistoryCubit>().state.data;
 
+      var resultList = <Widget>[];
       var lastValue = '';
+
       data.forEach((key, value) {
         String equator = value[0];
         String result = value[1];
@@ -37,14 +39,14 @@ class HistoryDialog extends StatelessWidget {
             children: [
               Expanded(
                 child: ListView(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(20),
                   physics: const ClampingScrollPhysics(),
                   children: getDataToList(),
                 ),
               ),
               IconButton(
                   onPressed: () {
-                    HistoryDB.clear();
+                    context.read<HistoryCubit>().clear();
                   },
                   icon: const Icon(Icons.delete_outline)),
             ],
@@ -67,6 +69,10 @@ class ArchiveRow extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
+        if (header != null)
+          const SizedBox(
+            height: 10,
+          ),
         if (header != null)
           Text(
             '$header =',
