@@ -192,7 +192,7 @@ class CalcButtonGrid extends StatelessWidget {
           children: [
             const Expanded(
                 child: CalcButton(
-              child: const Icon(Icons.favorite_border),
+              child: Icon(Icons.favorite_border),
             )),
             Expanded(
                 child: CalcButton(
