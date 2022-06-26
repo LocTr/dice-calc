@@ -185,12 +185,15 @@ List<Element> _reduceDice(List<Element> input) {
           result = _filter(result, list[i + 1] as FilterElement);
           list.removeAt(i + 1);
         } else if (list[i + 1] is RerollElement) {
+          print('is reroll');
           if ((list[i + 1] as RerollElement).type == RerollType.reroll) {
             result = _reroll(
                 result, currentDice.content, list[i + 1] as RerollElement);
+            list.removeAt(i + 1);
           } else {
             result = _explode(
                 result, currentDice.content, list[i + 1] as RerollElement);
+            list.removeAt(i + 1);
           }
         }
       }
