@@ -6,14 +6,20 @@ enum Operator {
 }
 
 enum FilterType {
-  drop,
-  keep,
+  drop('d'),
+  keep('k');
+
+  const FilterType(this.content);
+  final String content;
 }
 
 enum FilterCondition {
-  none,
-  lowest,
-  highest,
+  none(''),
+  lowest('l'),
+  highest('h');
+
+  const FilterCondition(this.content);
+  final String content;
 }
 
 enum RerollType {

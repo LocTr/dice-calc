@@ -22,18 +22,18 @@ class CalcView extends StatelessWidget {
                 SizedBox(
                   height: 50,
                 ),
-                Container(
-                  padding: const EdgeInsets.all(8.0),
-                  width: double.infinity,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                Expanded(
+                  child: ListView(
+                    reverse: true,
+                    physics: const ClampingScrollPhysics(),
                     children: [
                       BlocBuilder<CalcBloc, CalcState>(
                         builder: (context, state) {
-                          return Expanded(
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
                             child: Text(
                               textAlign: TextAlign.right,
-                              maxLines: 2,
+                              maxLines: 10,
                               context.watch<CalcBloc>().state.toString(),
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(

@@ -78,9 +78,9 @@ class FilterElement extends Element {
     final contentStr = content == 0 ? '' : content.toString();
 
     if (filterCondition == FilterCondition.none) {
-      return ' ${type.name} $contentStr ';
+      return '${type.content}$contentStr ';
     } else {
-      return ' ${type.name} $contentStr ${filterCondition.name}';
+      return '${type.content}${filterCondition.content}$contentStr';
     }
   }
 

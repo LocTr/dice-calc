@@ -27,6 +27,9 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
 
   void _onNumberElementAdded(NumberAdded event, Emitter<CalcState> emit) {
     final currentList = state.elementList;
+
+    if (currentList.length == 18) return;
+
     if (currentList.isEmpty) {
       emit(CalcState(
         elementList: [event.element],
@@ -56,6 +59,7 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
         ));
         break;
       case (DiceElement):
+        if (lastElement.content >= 9999) return;
         final DiceElement newElement = DiceElement(
             content: lastElement.content * 10 + event.element.content);
         emit(state.copyWith(
@@ -112,6 +116,9 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
 
   void _onDiceElementAdded(DiceAdded event, Emitter<CalcState> emit) {
     final currentList = state.elementList;
+
+    if (currentList.length == 18) return;
+
     if (currentList.isNotEmpty) {
       if (currentList.last is DiceElement) return;
     }
@@ -216,6 +223,7 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
   void _onOperatorElementAdded(OperatorAdded event, Emitter<CalcState> emit) {
     final currentList = state.elementList;
 
+    if (currentList.length == 18) return;
     if (currentList.isEmpty) return;
 
     final opElement = OperatorElement(operator: event.operator);
@@ -237,6 +245,7 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
     final currentList = state.elementList;
 
     if (currentList.isEmpty) return;
+    if (currentList.length == 18) return;
 
     if (currentList.last is DiceElement) {
       final newElement = FilterElement(
@@ -277,6 +286,7 @@ class CalcBloc extends Bloc<CalcEvent, CalcState> {
       RerollElementAdded event, Emitter<CalcState> emit) {
     final currentList = state.elementList;
 
+    if (currentList.length == 18) return;
     if (currentList.isEmpty) return;
 
     if (currentList.last is DiceElement) {
