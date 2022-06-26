@@ -1,4 +1,4 @@
-package com.example.dice_calc
+package com.locdev.dice_calc
 
 import io.flutter.embedding.android.FlutterActivity
 
